@@ -1,4 +1,4 @@
-import { Input } from "@/components/ui/input";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,13 +8,14 @@ import { Controller, useForm } from "react-hook-form";
 import ControlledInput from "../components/shared/ControlledInput";
 import ImageSlider from "@/components/shared/ImageSlider";
 import axios from "axios";
-import Header from "../components/shared/header";
 import { showToast } from "@/utils/toast";
+import { useNavigate } from "react-router-dom";
+
 
 const Signup = () => {
   const { control, handleSubmit, watch } = useForm({
     mode: "all",
-    defaultValues: {
+    defaultValues: {  
       firstName: "",
       lastName: "",
       password: "",
@@ -24,6 +25,7 @@ const Signup = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     try {
@@ -36,8 +38,7 @@ const Signup = () => {
       });
 
       showToast.success("Account created successfully");
-      // alert("Account created successfully");
-      // Redirect to login page after successful signup
+      navigate("/");
     } catch (error) {
       console.error(
         "Signup error:",

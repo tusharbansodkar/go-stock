@@ -30,7 +30,7 @@ const Login = () => {
     let { email, password } = data;
     await login(email, password);
     // Redirect to home page after successful login
-    navigate("/dashboard/stocks");
+    navigate("/dashboard");
   };
 
   return (
