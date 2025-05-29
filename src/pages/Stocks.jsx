@@ -1,4 +1,4 @@
 const Stocks = () => {
-  return <div>Stocks</div>;
+  return <div></div>;
 };
 export default Stocks;
