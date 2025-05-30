@@ -1,4 +1,4 @@
 const Commodities = () => {
-  return <div>Commodities</div>;
+  return <div></div>;
 };
 export default Commodities;

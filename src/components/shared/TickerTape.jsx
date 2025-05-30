@@ -65,14 +65,14 @@ const TickerTape = () => {
                 <span className={
                     change > 0 ? "text-green-500" : "text-red-500"
                   }>
-                 {change > 0 ? "+" + change : "-" + change}
+                 {change > 0 ? "+" + change : "" + change}
                 </span>
                 <span
                   className={
                     changePcnt > 0 ? "text-green-500" : "text-red-500"
                   }
                 >
-                  {(changePcnt > 0 ? '+' + changePcnt : '-' + changePcnt)}%
+                  {(changePcnt > 0 ? '+' + changePcnt : '' + changePcnt)}%
                  
                 </span>
               </div>
