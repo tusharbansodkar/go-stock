@@ -23,7 +23,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="min-w-[250px] bg-white h-screen border-r-1 border-gray-200 relative">
+    <div className="min-w-[250px] h-screen bg-white border-r-1 border-gray-200 relative">
       <div className="flex justify-center items-center h-16 mt-2 w-full">
         <img
           src={logo}

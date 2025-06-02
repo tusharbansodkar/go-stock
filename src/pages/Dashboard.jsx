@@ -14,7 +14,7 @@ const Dashboard = () => {
   return (
     <div className="flex ">
       <Sidebar />
-      <main className="flex-1 overflow-hidden">
+      <main className="flex-1">
         <Navbar />
         <TickerTape />
         <Outlet />
