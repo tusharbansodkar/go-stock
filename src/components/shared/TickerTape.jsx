@@ -1,44 +1,45 @@
-import { TargetIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 const socket = io("http://localhost:5000", {
   autoConnect: false,
 });
 
+const MARKET_FEED_ITEMS = [
+  { Exch: "B", ExchType: "C", ScripCode: 999901, Symbol: "SENSEX" },
+  { Exch: "N", ExchType: "C", ScripCode: 999920000, Symbol: "NIFTY" },
+  { Exch: "N", ExchType: "C", ScripCode: 999920005, Symbol: "BANKNIFTY" },
+];
+
+const TARGET_SCRIPS = new Set(MARKET_FEED_ITEMS.map(item => item.ScripCode));
+
+const SYMBOL_LOOKUP = new Map(MARKET_FEED_ITEMS.map(item => [item.ScripCode, item.Symbol]));
+
 const TickerTape = () => {
   const [data, setData] = useState({});
-  const marketFeedData = [
-    { Exch: "B", ExchType: "C", ScripCode: 999901, Symbol: "SENSEX" },
-    { Exch: "N", ExchType: "C", ScripCode: 999920000, Symbol: "NIFTY" },
-    { Exch: "N", ExchType: "C", ScripCode: 999920005, Symbol: "BANKNIFTY" },
-  ];
-
-  const TARGET_SCRIP_CODES = [
-    999901, 999920000, 999920005
-  ];
 
   useEffect(() => {
+
+    const handleMarketData = (newData) => {
+      const token = newData.Token;
+      const symbol = SYMBOL_LOOKUP.get(token);
+
+      if(symbol && TARGET_SCRIPS.has(token)) {
+        setData(prevData => ({
+          ...prevData,
+          [symbol]: newData,
+        }));
+      }
+    }
+
+    socket.on('connect', () => {
+      console.log('Socket connected, subscribing...')
+      socket.emit("subscribe", MARKET_FEED_ITEMS);
+    })
+
+    socket.on("marketData", handleMarketData);
+
+    // Connect after setting up listeners
     socket.connect();
-
-    // socket.on("connect", () => {
-    //   socket.emit("subscribe", marketFeedData);
-    // });
-
-    socket.on("marketData", (newData) => {
-      
-      const {Token} = newData;
-
-      const symbol = marketFeedData.find(item => item.ScripCode === Token)?.Symbol;
-
-        if (TARGET_SCRIP_CODES.includes(Token)) {
-          setData(prevData => {
-            return {
-              ...prevData,
-              [symbol]: newData,
-            };
-          })
-        }
-    });
 
     return () => {
       socket.off("connect");
@@ -48,37 +49,34 @@ const TickerTape = () => {
 
   return (
     <div className="flex justify-around py-2 bg-gray-700 text-white">
-      {/* <div className="  gap-5  whitespace-nowrap "> */}
-        
-        {Object.entries(data)
-          .map(([key, data]) => {
-            let change = Number(data.LastRate - data.PClose).toFixed(2);
-            let changePcnt = Number(change/ data.PClose * 100).toFixed(2);
-        
-            return (
-              <div
-                // key={idx}
-                className="flex items-center text-sm md:text-base gap-x-2"
+
+      {Object.entries(data)
+        .map(([symbol, stockData]) => {
+          let priceChange = (stockData.LastRate - stockData.PClose).toFixed(2);
+          let changePcnt = (priceChange / stockData.PClose * 100).toFixed(2);
+
+          return (
+            <div
+              className="flex items-center text-sm md:text-base gap-x-2"
+              key={symbol}
+            >
+              <span className="font-semibold">{symbol}</span>
+              <span>{(stockData.LastRate).toFixed(2)}</span>
+              <span className={
+                priceChange > 0 ? "text-green-500" : "text-red-500"
+              }>
+                {priceChange > 0 ? "+" + priceChange : "" + priceChange}
+              </span>
+              <span
+                className={
+                  changePcnt > 0 ? "text-green-500" : "text-red-500"
+                }
               >
-                <span className="font-semibold">{key}</span>
-                <span>{Number(data.LastRate).toFixed(2)}</span>
-                <span className={
-                    change > 0 ? "text-green-500" : "text-red-500"
-                  }>
-                 {change > 0 ? "+" + change : "" + change}
-                </span>
-                <span
-                  className={
-                    changePcnt > 0 ? "text-green-500" : "text-red-500"
-                  }
-                >
-                  {(changePcnt > 0 ? '+' + changePcnt : '' + changePcnt)}%
-                 
-                </span>
-              </div>
-            );
-          })}
-      {/* </div> */}
+                {(changePcnt > 0 ? '+' + changePcnt : '' + changePcnt)}%
+              </span>
+            </div>
+          );
+        })}
     </div>
   );
 };

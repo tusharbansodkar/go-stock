@@ -1,4 +1,9 @@
+import Container from "@/components/shared/Container";
+
 const Commodities = () => {
-  return <div></div>;
+  return <div>
+    <Container />
+      
+  </div>;
 };
 export default Commodities;
