@@ -8,6 +8,7 @@ const ControlledInput = ({
   type = "text",
   rules = {},
   autoFocus = false,
+  id,
 }) => {
   return (
     <div>
@@ -23,6 +24,7 @@ const ControlledInput = ({
               type={type}
               className={fieldState.error && "border-red-500"}
               autoFocus={autoFocus}
+              id={name}
             />
             {fieldState.error && (
               <p className="text-red-500 text-sm ">

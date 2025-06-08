@@ -1,4 +1,3 @@
-
 import { Checkbox } from "@/components/ui/checkbox";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,11 +10,10 @@ import axios from "axios";
 import { showToast } from "@/utils/toast";
 import { useNavigate } from "react-router-dom";
 
-
 const Signup = () => {
   const { control, handleSubmit, watch } = useForm({
     mode: "all",
-    defaultValues: {  
+    defaultValues: {
       firstName: "",
       lastName: "",
       password: "",
