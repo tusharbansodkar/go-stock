@@ -1,6 +1,8 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import logo from "../../assets/GoStock-logo1.png";
+import ButtonLeft from "./ButtonLeft";
+import ButtonRight from "./ButtonRight";
 
 const images = [
   "https://plus.unsplash.com/premium_photo-1683751113164-ba68afd98f6e?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -65,19 +67,13 @@ const ImageSlider = () => {
           />
         ))}
       </div>
+      <div className="absolute top-1/2 left-0 bg-gray-500 text-white tranform -translate-y-1/2 rounded-sm">
+        <ButtonLeft handleClick={goToPrevious} />
+      </div>
 
-      <button
-        onClick={goToPrevious}
-        className="absolute top-1/2 left-0 bg-black/50 p-2 text-white tranform -translate-y-1/2 cursor-pointer "
-      >
-        <ChevronLeft />
-      </button>
-      <button
-        onClick={gotToNext}
-        className="absolute top-1/2 right-0 bg-black/50 p-2 text-white tranform -translate-y-1/2 cursor-pointer "
-      >
-        <ChevronRight />
-      </button>
+      <div className="absolute top-1/2 right-0 bg-gray-500 text-white tranform -translate-y-1/2 rounded-sm">
+        <ButtonRight handleClick={gotToNext} />
+      </div>
 
       <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex justify-center space-x-2 ">
         {images.map((_, index) => (

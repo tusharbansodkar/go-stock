@@ -5,10 +5,11 @@ import { COMMODITY_FEED_ITEMS } from "@/data";
 const MARKET_FEED_DATA = COMMODITY_FEED_ITEMS;
 
 const Commodities = () => {
-  return <div>
-    <TickerTape MARKET_FEED_ITEMS={MARKET_FEED_DATA}/>
-    <Container />
-      
-  </div>;
+  return (
+    <div>
+      <TickerTape marketData={MARKET_FEED_DATA} />
+      <Container MARKET_FEED_ITEMS={MARKET_FEED_DATA} />
+    </div>
+  );
 };
 export default Commodities;

@@ -4,8 +4,10 @@ const socket = io("http://localhost:5000", {
   autoConnect: false,
 });
 
-const TickerTape = ({MARKET_FEED_ITEMS}) => {
+const TickerTape = ({marketData}) => {
   const [data, setData] = useState({});
+
+  const MARKET_FEED_ITEMS = marketData.slice(0, 3);
 
   const TARGET_SCRIPS = new Set(
     MARKET_FEED_ITEMS.map((item) => item.ScripCode)
