@@ -1,4 +1,4 @@
-import LineChart from "./shared/LineChart";
+import LineChart from "./LineChart";
 
 const InfoCard = ({ marketData, itemWidth }) => {
   return (
