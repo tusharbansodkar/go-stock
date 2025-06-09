@@ -1,5 +1,4 @@
 import { Checkbox } from "@/components/ui/checkbox";
-import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import { useState } from "react";
@@ -21,8 +20,6 @@ const Signup = () => {
       terms: false,
     },
   });
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
@@ -93,12 +90,12 @@ const Signup = () => {
             type="email"
             rules={{ required: "Email is required" }}
           />
-          <div className="relative">
+          <div>
             <ControlledInput
               control={control}
               name="password"
               placeholder="Enter your password"
-              type={showPassword ? "text" : "password"}
+              type="password"
               rules={{
                 required: "Password is required",
                 minLength: {
@@ -107,20 +104,13 @@ const Signup = () => {
                 },
               }}
             />
-            <button
-              type="button"
-              className="absolute right-2 top-1/4 -translate-y-1/4 cursor-pointer text-gray-500 hover:text-gray-700"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
-            </button>
           </div>
-          <div className="relative">
+          <div>
             <ControlledInput
               control={control}
               name="confirmPassword"
               placeholder="Confirm your password"
-              type={showConfirmPassword ? "text" : "password"}
+              type="password"
               rules={{
                 required: "Password is required",
                 minLength: {
@@ -131,13 +121,6 @@ const Signup = () => {
                   value === passwordValue || "Passwords do not match",
               }}
             />
-            <button
-              type="button"
-              className="absolute right-2 top-1/4 -translate-y-1/4 cursor-pointer text-gray-500 hover:text-gray-700"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            >
-              {showConfirmPassword ? <Eye size={18} /> : <EyeOff size={18} />}
-            </button>
           </div>
           <Controller
             name="terms"

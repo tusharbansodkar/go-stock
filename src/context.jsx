@@ -27,7 +27,7 @@ const AuthProvider = ({ children }) => {
         })
         .finally(() => {
           setLoading(false);
-        }, []);
+        });
     } else {
       setLoading(false);
     }
@@ -63,8 +63,15 @@ const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  // update user details
+  const updateProfileDetails = (updatedData) => {
+    setUser((prevUser) => ({ ...prevUser, ...updatedData }));
+  };
+
   return (
-    <AuthContext.Provider value={{ login, logout, user, loading }}>
+    <AuthContext.Provider
+      value={{ login, logout, user, loading, updateProfileDetails }}
+    >
       {children}
     </AuthContext.Provider>
   );
