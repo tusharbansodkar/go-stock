@@ -1,7 +1,7 @@
 import { BellDot, ChevronDown, LogOut, User } from "lucide-react";
 import SearchBar from "./SearchBar";
 import { Separator } from "@radix-ui/react-separator";
-import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useContext } from "react";
 import { AuthContext } from "@/context";
 import {
@@ -11,9 +11,11 @@ import {
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { Button } from "../ui/button";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   return (
     <div className="flex justify-around items-center bg-white h-16">
@@ -25,13 +27,13 @@ const Navbar = () => {
           className="h-8 w-[2px] bg-gray-200 "
         />
         <Avatar className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-gray-200">
-          {/* <AvatarImage
+          <AvatarImage
             src="https://github.com/shadcn.png"
             className="w-full h-full rounded-full"
-          /> */}
-          <AvatarFallback className="text-gray-500 text-xl font-bold  ">
+          />
+          {/* <AvatarFallback className="text-gray-500 text-xl font-bold  ">
             {user?.firstName?.charAt(0) || "U"}
-          </AvatarFallback>
+          </AvatarFallback> */}
         </Avatar>
         <div className="flex items-center gap-2">
           <h2 className="font-semibold text-gray-600 ">
@@ -54,6 +56,7 @@ const Navbar = () => {
                 <Button
                   variant="ghost"
                   className="w-full cursor-pointer justify-start"
+                  onClick={() => navigate("/dashboard/profile")}
                 >
                   <User className=" mr-2" /> Profile
                 </Button>

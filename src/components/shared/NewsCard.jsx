@@ -7,7 +7,6 @@ const NewsCard = ({ title, link, pubDate, content }) => {
 
   const date = new Date(pubDate);
   const formattedDate = new Intl.DateTimeFormat("en-IN").format(date);
-  console.log(formattedDate);
 
   return (
     <div className="w-[70%] flex flex-col gap-y-2 rounded-lg mt-5 m-auto p-3 bg-white drop-shadow-lg/20">
