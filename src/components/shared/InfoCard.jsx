@@ -6,7 +6,7 @@ const InfoCard = ({ marketData, itemWidth }) => {
       {marketData.map((item, index) => (
         <div
           key={index}
-          className={`leading-7 h-[200px] shadow-lg/25 rounded-md p-2`}
+          className={`leading-7 h-[180px] shadow-lg/25 rounded-md p-2`}
           style={{ minWidth: `${itemWidth - 12}px` }}
         >
           <div className="flex justify-evenly items-center  w-full h-[50%]">

@@ -21,7 +21,7 @@ const Container = ({ MARKET_FEED_ITEMS }) => {
   const visibleCards = 4;
 
   // Define item width and gap for slide calculation
-  let itemWidth = Math.ceil(containerWidth.toFixed(0) / visibleCards);
+  let itemWidth = Math.ceil(containerWidth / visibleCards);
   const gap = 12; // Corresponds to gap-3 (0.75rem = 12px assuming 1rem = 16px)
 
   const showNext = () => {
@@ -65,10 +65,10 @@ const Container = ({ MARKET_FEED_ITEMS }) => {
 
   return (
     <div className="h-[calc(100vh-6rem)] p-3 overflow-y-auto">
-      <div className=" grid grid-cols-5 grid-rows-5 gap-4 overflow-auto">
+      <div className=" grid grid-cols-3 gap-4 overflow-auto">
         <div
           ref={containerRef}
-          className="col-span-full row-span-2 rounded-md relative drop-shadow-sm/20 bg-white p-4 overflow-hidden"
+          className="col-span-full rounded-md relative drop-shadow-sm/20 bg-white p-4 overflow-hidden"
         >
           <div
             className="flex gap-3 transition-transform duration-500 ease-in-out"
@@ -77,7 +77,7 @@ const Container = ({ MARKET_FEED_ITEMS }) => {
             }}
           >
             {marketData.length === 0 ? (
-              <div className="h-[200px] w-full">
+              <div className="h-[150px] w-full">
                 <LoadingSpinner />
               </div>
             ) : (
@@ -93,9 +93,9 @@ const Container = ({ MARKET_FEED_ITEMS }) => {
           </div>
         </div>
 
-        <div className="bg-amber-600  col-span-3 row-span-3 rounded-md"></div>
+        <div className="bg-amber-600 col-span-2 rounded-md"></div>
 
-        <div className="bg-amber-600  col-span-2  row-span-3 rounded-md">
+        <div className="drop-shadow-sm/30 h-100 bg-white col-span-1 rounded-md overflow-hidden">
           <Watchlist />
         </div>
       </div>
