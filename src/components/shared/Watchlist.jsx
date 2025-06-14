@@ -30,13 +30,13 @@ const Watchlist = () => {
 
   useEffect(() => {
     socket.on("connect", () => {
-      console.log("watchlist connected");
+      // console.log("watchlist connected");
       socket.emit("subscribe", WATCHLIST_FEED_ITEM);
     });
 
     socket.on("marketData", (newData) => {
       const token = newData.Token;
-      // console.log("watchlist", newData);
+      console.log("watchlist", newData);
       const symbol = SYMBOL_LOOKUP.get(token);
 
       if (symbol && TARGET_SCRIPS.has(token)) {
