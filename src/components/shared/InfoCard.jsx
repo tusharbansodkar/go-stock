@@ -18,17 +18,32 @@ const InfoCard = ({ marketData, itemWidth }) => {
 
           <div className="flex w-full justify-around ">
             <p className="text-gray-500">Price</p>
-            <p className="text-red-500">{item.LastRate.toFixed(2)}</p>
+            <p className="text-red-500">
+              {item.LastRate.toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </p>
           </div>
 
           <div className="flex w-full justify-around">
             <p className="text-gray-500">High</p>
-            <p className="text-green-500">{item.High.toFixed(2)}</p>
+            <p className="text-green-500">
+              {item.High.toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </p>
           </div>
 
           <div className="flex w-full justify-around">
             <p className="text-gray-500">Low</p>
-            <p className="text-red-500">{item.High.toFixed(2)}</p>
+            <p className="text-red-500">
+              {item.High.toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </p>
           </div>
         </div>
       ))}
