@@ -56,7 +56,7 @@ const Profile = () => {
 
   return (
     <div className="h-screen p-4 overflow-auto ">
-      <div className="w-[80%] m-auto">
+      <div className="relative -z-1 w-[80%] m-auto">
         <h2 className="font-bold text-3xl tracking-wide">Profile</h2>
         <hr className="border-gray-300 border-1 mt-4" />
         <form
