@@ -1,37 +1,14 @@
-import axios from "axios";
 import { Search, X } from "lucide-react";
-import { useState } from "react";
 
-const SearchInput = ({ setResult, setShowResult, inputRef }) => {
-  const [input, setInput] = useState("");
-  const [showX, setShowX] = useState(false);
-
-  const handleChange = (e) => {
-    let currentValue = e.target.value;
-    setInput(currentValue);
-    setShowX(true);
-
-    axios.get("https://jsonplaceholder.typicode.com/users").then((res) => {
-      const data = res.data;
-      const result = data.filter((item) => {
-        return item.name.toLowerCase().includes(currentValue.toLowerCase());
-      });
-
-      if (result.length > 0) {
-        setShowResult(true);
-      }
-
-      setResult(result);
-    });
-  };
-
-  const handleClose = () => {
-    setShowResult(false);
-    setInput("");
-    setShowX(false);
-    inputRef.current.blur();
-  };
-
+const SearchInput = ({
+  input,
+  setResult,
+  setShowResult,
+  inputRef,
+  handleChange,
+  handleClose,
+  showX,
+}) => {
   return (
     <div>
       <div className="relative flex justify-around items-center w-90 shadow-md/20 rounded-md bg-gray-50">

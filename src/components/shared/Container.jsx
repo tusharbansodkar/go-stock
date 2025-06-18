@@ -67,7 +67,7 @@ const Container = ({ MARKET_FEED_ITEMS }) => {
       <div className=" grid grid-cols-5 grid-rows-5 gap-4 overflow-auto">
         <div
           ref={containerRef}
-          className="col-span-full row-span-2 rounded-md relative drop-shadow-sm/20 bg-white p-4 overflow-hidden -z-1"
+          className="col-span-full row-span-2 rounded-md relative drop-shadow-sm/20 bg-white p-4 overflow-hidden "
         >
           <div
             className="flex gap-3 transition-transform duration-500 ease-in-out"
