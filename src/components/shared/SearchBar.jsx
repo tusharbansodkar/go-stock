@@ -38,6 +38,7 @@ const SearchBar = () => {
         setResult={setResult}
         setShowResult={setShowResult}
       />
+
       {showResult && result.length > 0 && <SearchResult result={result} />}
     </div>
   );
