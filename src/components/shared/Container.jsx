@@ -72,7 +72,6 @@ const Container = ({ MARKET_FEED_ITEMS }) => {
         >
           <div
             className="flex gap-3 transition-transform duration-500 ease-in-out"
-            className="flex gap-3 transition-transform duration-500 ease-in-out"
             style={{
               transform: `translateX(-${currentIndex * itemWidth}px)`,
             }}
