@@ -1,21 +1,23 @@
 import { useEffect, useState } from "react";
 import LineChart from "./LineChart";
 import { sharedSocket as socket } from "@/services/socketServices";
+import { WATCHLIST_FEED_ITEM } from "@/data";
+import Watchlist from "./Watchlist";
 
 const InfoCard = ({ marketData, itemWidth }) => {
   const [data, setData] = useState({});
 
-  // console.log(TARGET_SCRIPS);
-
   useEffect(() => {
     const SYMBOL_LOOKUP = new Map(
-      marketData.map((item) => [item.Token, item.Symbol])
+      WATCHLIST_FEED_ITEM.map((item) => [item.ScripCode, item.symbol])
     );
 
-    const TARGET_SCRIPS = new Set(marketData.map((item) => item.Token));
+    const TARGET_SCRIPS = new Set(
+      WATCHLIST_FEED_ITEM.map((item) => item.ScripCode)
+    );
 
     socket.on("marketData", (newData) => {
-      console.log("info card", newData);
+      // console.log("info card", newData);
       const token = newData.Token;
       const symbol = SYMBOL_LOOKUP.get(token);
 
@@ -37,50 +39,56 @@ const InfoCard = ({ marketData, itemWidth }) => {
   return (
     <>
       {console.log(data)}
-      {marketData.map((item, index) => (
-        <div
-          key={index}
-          className={`leading-7 h-[180px] shadow-lg/25 rounded-md p-2`}
-          style={{ minWidth: `${itemWidth - 12}px` }}
-        >
-          <div className="flex justify-evenly items-center  w-full h-[50%]">
-            <p className="font-bold text-2xl">{item.Symbol}</p>
-            <div className="w-[50%] h-full">
-              <LineChart />
+      {Object.entries(data).map(([symbol, stockData], index) => {
+        let priceChange = (stockData.LastRate - stockData.PClose).toFixed(2);
+
+        return (
+          <div
+            key={index}
+            className={`leading-7 h-[180px] shadow-lg/25 rounded-md p-2`}
+            style={{ minWidth: `${itemWidth - 12}px` }}
+          >
+            <div className="flex justify-evenly items-center  w-full h-[50%]">
+              <p className="font-bold text-2xl">{symbol}</p>
+              <div className="w-[50%] h-full">
+                <LineChart />
+              </div>
+            </div>
+
+            <div className="flex w-full justify-around ">
+              <p className="text-gray-500">Price</p>
+              <p
+                className={priceChange > 0 ? "text-green-500" : "text-red-500"}
+              >
+                {stockData.LastRate.toLocaleString("en-IN", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </p>
+            </div>
+
+            <div className="flex w-full justify-around">
+              <p className="text-gray-500">High</p>
+              <p className="text-green-500">
+                {stockData.High.toLocaleString("en-IN", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </p>
+            </div>
+
+            <div className="flex w-full justify-around">
+              <p className="text-gray-500">Low</p>
+              <p className="text-red-500">
+                {stockData.Low.toLocaleString("en-IN", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </p>
             </div>
           </div>
-
-          <div className="flex w-full justify-around ">
-            <p className="text-gray-500">Price</p>
-            <p className="text-red-500">
-              {item.LastRate.toLocaleString("en-IN", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}
-            </p>
-          </div>
-
-          <div className="flex w-full justify-around">
-            <p className="text-gray-500">High</p>
-            <p className="text-green-500">
-              {item.High.toLocaleString("en-IN", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}
-            </p>
-          </div>
-
-          <div className="flex w-full justify-around">
-            <p className="text-gray-500">Low</p>
-            <p className="text-red-500">
-              {item.Low.toLocaleString("en-IN", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}
-            </p>
-          </div>
-        </div>
-      ))}
+        );
+      })}
     </>
   );
 };

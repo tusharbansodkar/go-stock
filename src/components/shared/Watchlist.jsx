@@ -36,7 +36,7 @@ const Watchlist = () => {
 
     socket.on("marketData", (newData) => {
       const token = newData.Token;
-      console.log("watchlist", newData);
+      // console.log("watchlist", newData);
       const symbol = SYMBOL_LOOKUP.get(token);
 
       if (symbol && TARGET_SCRIPS.has(token)) {

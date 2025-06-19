@@ -28,7 +28,7 @@ const Container = ({ MARKET_FEED_ITEMS }) => {
     if (marketData.length === 0) return;
 
     setCurrentIndex((prevIndex) =>
-      prevIndex === marketData.length - visibleCards ? prevIndex : prevIndex + 1
+      prevIndex === 10 - visibleCards ? prevIndex : prevIndex + 1
     );
   };
 
