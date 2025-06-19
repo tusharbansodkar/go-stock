@@ -8,7 +8,6 @@ const SearchBar = () => {
   const [result, setResult] = useState([]);
   const [showResult, setShowResult] = useState(false);
   const [showX, setShowX] = useState(false);
-  const inputRef = useRef(null);
   const searchContainerRef = useRef(null);
 
   useEffect(() => {
@@ -55,7 +54,6 @@ const SearchBar = () => {
     setShowResult(false);
     setInput("");
     setShowX(false);
-    inputRef.current.blur();
   };
 
   return (
@@ -65,7 +63,6 @@ const SearchBar = () => {
     >
       <SearchInput
         input={input}
-        inputRef={inputRef}
         setResult={setResult}
         setShowResult={setShowResult}
         handleChange={handleChange}
