@@ -1,19 +1,78 @@
-import { AuthContext } from "@/context";
-import { Search } from "lucide-react";
-import { useContext } from "react";
+import { useEffect, useRef, useState } from "react";
+import SearchInput from "./SearchInput";
+import SearchResult from "./SearchResult";
+import axios from "axios";
 
 const SearchBar = () => {
-  const { searchInputRef } = useContext(AuthContext);
+  const [input, setInput] = useState("");
+  const [result, setResult] = useState([]);
+  const [showResult, setShowResult] = useState(false);
+  const [showX, setShowX] = useState(false);
+  const inputRef = useRef(null);
+  const searchContainerRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target)
+      ) {
+        setShowResult(false);
+        setInput("");
+        setShowX(false);
+      }
+    };
+
+    if (showResult) {
+      document.addEventListener("click", handleClickOutside, true);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  }, [showResult]);
+
+  const handleChange = (e) => {
+    let currentValue = e.target.value;
+    setInput(currentValue);
+    setShowX(true);
+
+    axios.get("https://jsonplaceholder.typicode.com/users").then((res) => {
+      const data = res.data;
+      const result = data.filter((item) => {
+        return item.name.toLowerCase().includes(currentValue.toLowerCase());
+      });
+
+      if (result.length > 0) {
+        setShowResult(true);
+      }
+
+      setResult(result);
+    });
+  };
+
+  const handleClose = () => {
+    setShowResult(false);
+    setInput("");
+    setShowX(false);
+    inputRef.current.blur();
+  };
 
   return (
-    <div className="relative flex justify-around items-center w-80 ">
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-      <input
-        type="text"
-        placeholder="Search any stock or crypto"
-        ref={searchInputRef}
-        className="w-full h-10 pl-10 pr-4 border rounded-md focus:outline-none focus:ring focus:ring-blue-300 bg-gray-50 border-none text-gray-600"
+    <div
+      ref={searchContainerRef}
+      className="relative top-1/2 -translate-y-1/3 h-full z-10"
+    >
+      <SearchInput
+        input={input}
+        inputRef={inputRef}
+        setResult={setResult}
+        setShowResult={setShowResult}
+        handleChange={handleChange}
+        handleClose={handleClose}
+        showX={showX}
       />
+      {showResult && result.length > 0 && <SearchResult result={result} />}
     </div>
   );
 };
