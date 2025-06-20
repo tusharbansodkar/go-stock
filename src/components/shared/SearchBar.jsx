@@ -34,20 +34,22 @@ const SearchBar = () => {
   const handleChange = (e) => {
     let currentValue = e.target.value;
     setInput(currentValue);
+    setShowResult(true);
     setShowX(true);
 
-    axios.get("https://jsonplaceholder.typicode.com/users").then((res) => {
-      const data = res.data;
-      const result = data.filter((item) => {
-        return item.name.toLowerCase().includes(currentValue.toLowerCase());
-      });
+    // axios.get("https://jsonplaceholder.typicode.com/users").then((res) => {
+    //   const data = res.data;
+    //   const result = data.filter((item) => {
+    //     return item.name.toLowerCase().includes(currentValue.toLowerCase());
+    //   });
 
-      if (result.length > 0) {
-        setShowResult(true);
-      }
+    //   if (result.length > 0) {
+    //     setShowResult(true);
+    //   }
 
-      setResult(result);
-    });
+    //   setResult(result);
+    // }
+    // );
   };
 
   const handleClose = () => {
@@ -69,7 +71,8 @@ const SearchBar = () => {
         handleClose={handleClose}
         showX={showX}
       />
-      {showResult && result.length > 0 && <SearchResult result={result} />}
+      {/* {showResult && result.length > 0 && <SearchResult result={result} />} */}
+      {showResult && <SearchResult />}
     </div>
   );
 };

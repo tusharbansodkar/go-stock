@@ -1,6 +1,6 @@
 import { AuthContext } from "@/context";
 import { Search, X } from "lucide-react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 const SearchInput = ({
   input,
@@ -11,6 +11,17 @@ const SearchInput = ({
   showX,
 }) => {
   const { searchInputRef } = useContext(AuthContext);
+
+  useEffect(() => {
+    searchInputRef.current.addEventListener("focus", () => {
+      setShowResult(true);
+    });
+
+    searchInputRef.current.removeEventListener("focus", () => {
+      setShowResult(false);
+    });
+  }, []);
+
   return (
     <div>
       <div className="relative flex justify-around items-center w-90 shadow-md/20 rounded-md bg-gray-50">
