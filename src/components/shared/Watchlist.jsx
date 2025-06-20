@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { WATCHLIST_FEED_ITEM } from "@/data";
 import { AuthContext } from "@/context";
@@ -71,14 +71,20 @@ const Watchlist = () => {
           return (
             <li
               key={index}
-              className="flex justify-between items-center tracking-tight border-b-2 border-gray-300 py-2"
+              className="flex justify-between items-center group tracking-tight border-b-2 border-gray-300 p-2 hover:bg-gray-100"
             >
-              <div className="w-[70%] truncate ">
+              <div className="w-[40%] truncate">
                 <p className="font-semibold text-sm">{symbol}</p>
                 <p className="text-gray-800 w-fit rounded-xs text-xs p-1 bg-gray-200">
                   {exchangeMap[stockData.Exch]}
                 </p>
               </div>
+              <span
+                className="opacity-0 group-hover:opacity-100 inline ml-2 cursor-pointer"
+                title="Remove from watchlist"
+              >
+                <Trash2 className="text-red-500" size={20} />
+              </span>
               <div className="text-right">
                 <p className="font-semibold ">
                   {stockData.LastRate.toLocaleString("en-IN", {
