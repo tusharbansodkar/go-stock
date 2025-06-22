@@ -30,7 +30,7 @@ const Watchlist = () => {
 
   useEffect(() => {
     socket.on("connect", () => {
-      // console.log("watchlist connected");
+      console.log("watchlist connected");
       socket.emit("subscribe", WATCHLIST_FEED_ITEM);
     });
 

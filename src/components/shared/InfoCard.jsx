@@ -16,13 +16,9 @@ const InfoCard = ({ marketData, itemWidth }) => {
   const [data, setData] = useState({});
 
   useEffect(() => {
-    socket.on("connect", () => {
-      // console.log("watchlist connected");
-      socket.emit("subscribe", WATCHLIST_FEED_ITEM);
-    });
+    socket.emit("subscribe", WATCHLIST_FEED_ITEM);
 
     socket.on("marketData", (newData) => {
-      // console.log("info card", newData);
       const token = newData.Token;
       const symbol = SYMBOL_LOOKUP.get(token);
 
@@ -34,8 +30,6 @@ const InfoCard = ({ marketData, itemWidth }) => {
       }
     });
 
-    socket.connect();
-
     return () => {
       // socket.off();
     };
@@ -43,7 +37,6 @@ const InfoCard = ({ marketData, itemWidth }) => {
 
   return (
     <>
-      {console.log(data)}
       {Object.entries(data).map(([symbol, stockData], index) => {
         let priceChange = (stockData.LastRate - stockData.PClose).toFixed(2);
 
