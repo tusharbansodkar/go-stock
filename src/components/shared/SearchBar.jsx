@@ -19,6 +19,7 @@ const SearchBar = () => {
         setShowResult(false);
         setInput("");
         setShowX(false);
+        setResult([]);
       }
     };
 
@@ -37,19 +38,20 @@ const SearchBar = () => {
     setShowResult(true);
     setShowX(true);
 
-    // axios.get("https://jsonplaceholder.typicode.com/users").then((res) => {
-    //   const data = res.data;
-    //   const result = data.filter((item) => {
-    //     return item.name.toLowerCase().includes(currentValue.toLowerCase());
-    //   });
-
-    //   if (result.length > 0) {
-    //     setShowResult(true);
-    //   }
-
-    //   setResult(result);
-    // }
-    // );
+    if (currentValue.length > 2) {
+      axios
+        .get(`http://localhost:5000/api/search?string=${currentValue}`)
+        .then((res) => {
+          const data = res.data;
+          // console.log(data);
+          setResult(data);
+        })
+        .catch((err) => {
+          if (err.response) {
+            console.log(err.response.data);
+          }
+        });
+    }
   };
 
   const handleClose = () => {
@@ -71,8 +73,8 @@ const SearchBar = () => {
         handleClose={handleClose}
         showX={showX}
       />
-      {/* {showResult && result.length > 0 && <SearchResult result={result} />} */}
-      {showResult && <SearchResult />}
+      {showResult && <SearchResult result={result} />}
+      {/* {showResult && <SearchResult />} */}
     </div>
   );
 };
