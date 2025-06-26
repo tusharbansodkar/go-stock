@@ -1,6 +1,7 @@
 import { ShoppingBasket } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { sharedSocket as socket } from "@/services/socketServices";
+import { AuthContext } from "@/context";
 
 const exchangeMap = {
   N: "NSE",
@@ -8,11 +9,22 @@ const exchangeMap = {
   M: "MCX",
 };
 
-const SearchResult = ({ result }) => {
+const SearchResult = ({ result, selectedItem, data, setData }) => {
   const [selectedOption, setSelectedOption] = useState("All");
-  const [data, setData] = useState({});
+
+  const payload = result.map(({ Exch, ExchType, ScripCode }) => {
+    return {
+      Exch,
+      ExchType,
+      ScripCode,
+    };
+  });
+
   const SYMBOL_LOOKUP = new Map(
-    result.map((item) => [item.ScripCode, item.Name])
+    result.map((item) => [
+      item.ScripCode,
+      { Name: item.Name, FullName: item.FullName },
+    ])
   );
 
   const handleClick = (option) => {
@@ -20,29 +32,40 @@ const SearchResult = ({ result }) => {
   };
 
   useEffect(() => {
-    if (result.length > 0) {
-      const payload = result.map(({ Exch, ExchType, ScripCode }) => {
-        return {
-          Exch,
-          ExchType,
-          ScripCode,
-        };
-      });
+    if (result.length === 0) return;
 
-      console.log(payload);
+    setData({});
 
-      socket.on("connect", () => {
-        console.log("getting results");
-        // socket.emit("subscribe", payload);
-      });
+    const handleMarketData = (newData) => {
+      const token = newData.Token.toString();
+      const symbolData = SYMBOL_LOOKUP.get(token);
 
-      socket.connect();
-    }
+      if (!symbolData) return;
+
+      const { Name: symbol, FullName: fullName } = symbolData;
+      const uniqueSymbol = `${symbol}-${newData.Exch}`;
+
+      if (uniqueSymbol) {
+        setData((prevData) => ({
+          ...prevData,
+          [uniqueSymbol]: {
+            ...newData,
+            FullName: fullName,
+          },
+        }));
+      }
+    };
+
+    socket.emit("subscribe", payload);
+    socket.on("marketData", handleMarketData);
+
+    return () => {
+      socket.off("marketData", handleMarketData);
+    };
   }, [result]);
 
   return (
-    <div className=" w-[150%] h-60 bg-gray-50 rounded-md mt-3 p-2 shadow-md/20 overflow-y-auto custom-scrollbar">
-      {/* {console.log(data)} */}
+    <div className="w-[150%] h-60 bg-gray-50 rounded-md mt-3 p-2 shadow-md/20 overflow-y-auto custom-scrollbar">
       <div className="grid grid-cols-3 border-b-2 border-gray-300 pb-2 text-gray-500 text-center text-md">
         <p
           className={`border-r-2 border-gray-300 cursor-pointer ${
@@ -71,27 +94,52 @@ const SearchResult = ({ result }) => {
       </div>
 
       {result.length > 0 ? (
-        result.map((item) => {
+        Object.entries(data).map(([key, stockData], index) => {
+          const [name, exch] = key.split("-");
+
           return (
-            <div className="flex justify-between items-center group hover:bg-gray-200 px-2 py-2 text-sm border-b-2 border-gray-300">
-              <div>
-                <div className=" items-center">
-                  <span>{item.Name}</span>
+            <div
+              key={index}
+              className={`flex justify-between items-center group hover:bg-gray-200 px-2 py-2 text-sm border-b-2 border-gray-300 ${
+                selectedItem === index ? "bg-gray-200" : ""
+              }`}
+            >
+              <div className="w-[50%]">
+                <div className="w-fit items-center cursor-pointer">
+                  <span>{name}</span>
                   <span className="text-gray-800 w-fit ml-1 rounded-xs text-xs py-0.5 px-1 bg-gray-300">
-                    {exchangeMap[item.Exch]}
+                    {exchangeMap[exch]}
                   </span>
                 </div>
-                <p className="truncate text-xs">{item.FullName}</p>
+                <p className="truncate text-xs cursor-pointer">
+                  {stockData.FullName}
+                </p>
               </div>
               <span
                 className="opacity-0 group-hover:opacity-100 cursor-pointer"
                 title="Add to watchlist"
               >
-                <ShoppingBasket className="text-green-500" />
+                <ShoppingBasket
+                  className="text-green-500"
+                  onClick={() => {
+                    console.log("add to watchlist");
+                  }}
+                />
               </span>
-              <div className="text-right">
-                <p className="font-semibold ">2,448.40</p>
-                <p className="text-green-500">2.25%</p>
+              <div className="w-[30%] text-right">
+                <p className="font-semibold ">
+                  {stockData.LastRate.toLocaleString("en-IN", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                </p>
+                <p className="text-green-500">
+                  {stockData.ChgPcnt.toLocaleString("en-IN", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                  %
+                </p>
               </div>
             </div>
           );

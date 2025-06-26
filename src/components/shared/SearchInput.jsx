@@ -4,23 +4,31 @@ import { useContext, useEffect } from "react";
 
 const SearchInput = ({
   input,
-  setResult,
   setShowResult,
   handleChange,
   handleClose,
   showX,
+  selectedItem,
+  setSelectedItem,
+  data,
 }) => {
   const { searchInputRef } = useContext(AuthContext);
+  const keys = Object.keys(data);
+  const resultCount = keys.length;
 
-  useEffect(() => {
-    searchInputRef.current.addEventListener("focus", () => {
-      setShowResult(true);
-    });
+  const handleKeyDown = (e) => {
+    if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+      e.preventDefault();
+    }
 
-    searchInputRef.current.removeEventListener("focus", () => {
-      setShowResult(false);
-    });
-  }, []);
+    if (e.key === "ArrowUp" && selectedItem > 0) {
+      setSelectedItem(selectedItem - 1);
+    } else if (e.key === "ArrowDown" && selectedItem < resultCount - 1) {
+      setSelectedItem(selectedItem + 1);
+    } else if (e.key === "Enter") {
+      console.log(data[keys[selectedItem]]);
+    }
+  };
 
   return (
     <div>
@@ -32,7 +40,9 @@ const SearchInput = ({
           placeholder="Search any stock or commodity"
           className="w-full h-10 pl-10 pr-4 border rounded-md focus:outline-none border-none text-gray-600"
           onChange={handleChange}
+          onFocus={() => setShowResult(true)}
           value={input}
+          onKeyDown={handleKeyDown}
         />
         {showX ? (
           <X

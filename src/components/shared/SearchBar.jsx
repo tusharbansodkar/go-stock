@@ -8,7 +8,10 @@ const SearchBar = () => {
   const [result, setResult] = useState([]);
   const [showResult, setShowResult] = useState(false);
   const [showX, setShowX] = useState(false);
+  const [data, setData] = useState({});
+  const [selectedItem, setSelectedItem] = useState(0);
   const searchContainerRef = useRef(null);
+  const resultContainerRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -32,11 +35,25 @@ const SearchBar = () => {
     };
   }, [showResult]);
 
+  useEffect(() => {
+    if (resultContainerRef.current) {
+      const listContainer = resultContainerRef.current.children[0];
+
+      if (listContainer && listContainer.children[selectedItem]) {
+        listContainer.children[selectedItem].scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+    }
+  }, [selectedItem]);
+
   const handleChange = (e) => {
     let currentValue = e.target.value;
     setInput(currentValue);
     setShowResult(true);
     setShowX(true);
+    setSelectedItem(0);
 
     if (currentValue.length > 2) {
       axios
@@ -58,6 +75,7 @@ const SearchBar = () => {
     setShowResult(false);
     setInput("");
     setShowX(false);
+    setResult([]);
   };
 
   return (
@@ -67,14 +85,24 @@ const SearchBar = () => {
     >
       <SearchInput
         input={input}
-        setResult={setResult}
         setShowResult={setShowResult}
         handleChange={handleChange}
         handleClose={handleClose}
         showX={showX}
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        data={data}
       />
-      {showResult && <SearchResult result={result} />}
-      {/* {showResult && <SearchResult />} */}
+      <div ref={resultContainerRef}>
+        {showResult && (
+          <SearchResult
+            result={result}
+            selectedItem={selectedItem}
+            data={data}
+            setData={setData}
+          />
+        )}
+      </div>
     </div>
   );
 };
