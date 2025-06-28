@@ -19,7 +19,7 @@ const News = () => {
   }, []);
 
   return (
-    <div className=" w-full h-[calc(100vh-4rem)] overflow-y-auto p-4">
+    <div className="h-[calc(100vh-4rem)] overflow-y-auto p-4 ">
       <h2 className="font-bold text-4xl tracking-wide">Top Headlines</h2>
       <hr className="border-gray-300 border-1 mt-4 " />
       {news.length > 0 ? newsCards : <LoadingSpinner />}
