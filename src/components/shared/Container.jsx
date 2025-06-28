@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-import LineChart from "./LineChart";
 import axios from "axios";
 import ButtonRight from "./ButtonRight";
 import ButtonLeft from "./ButtonLeft";
