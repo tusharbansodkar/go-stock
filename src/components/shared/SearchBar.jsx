@@ -8,10 +8,8 @@ const SearchBar = () => {
   const [result, setResult] = useState([]);
   const [showResult, setShowResult] = useState(false);
   const [showX, setShowX] = useState(false);
-  const [data, setData] = useState({});
-  const [selectedItem, setSelectedItem] = useState(0);
+  const inputRef = useRef(null);
   const searchContainerRef = useRef(null);
-  const resultContainerRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -22,7 +20,6 @@ const SearchBar = () => {
         setShowResult(false);
         setInput("");
         setShowX(false);
-        setResult([]);
       }
     };
 
@@ -35,47 +32,30 @@ const SearchBar = () => {
     };
   }, [showResult]);
 
-  useEffect(() => {
-    if (resultContainerRef.current) {
-      const listContainer = resultContainerRef.current.children[0];
-
-      if (listContainer && listContainer.children[selectedItem]) {
-        listContainer.children[selectedItem].scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      }
-    }
-  }, [selectedItem]);
-
   const handleChange = (e) => {
     let currentValue = e.target.value;
     setInput(currentValue);
-    setShowResult(true);
     setShowX(true);
-    setSelectedItem(0);
 
-    if (currentValue.length > 2) {
-      axios
-        .get(`http://localhost:5000/api/search?string=${currentValue}`)
-        .then((res) => {
-          const data = res.data;
-          // console.log(data);
-          setResult(data);
-        })
-        .catch((err) => {
-          if (err.response) {
-            console.log(err.response.data);
-          }
-        });
-    }
+    axios.get("https://jsonplaceholder.typicode.com/users").then((res) => {
+      const data = res.data;
+      const result = data.filter((item) => {
+        return item.name.toLowerCase().includes(currentValue.toLowerCase());
+      });
+
+      if (result.length > 0) {
+        setShowResult(true);
+      }
+
+      setResult(result);
+    });
   };
 
   const handleClose = () => {
     setShowResult(false);
     setInput("");
     setShowX(false);
-    setResult([]);
+    inputRef.current.blur();
   };
 
   return (
@@ -85,24 +65,14 @@ const SearchBar = () => {
     >
       <SearchInput
         input={input}
+        inputRef={inputRef}
+        setResult={setResult}
         setShowResult={setShowResult}
         handleChange={handleChange}
         handleClose={handleClose}
         showX={showX}
-        selectedItem={selectedItem}
-        setSelectedItem={setSelectedItem}
-        data={data}
       />
-      <div ref={resultContainerRef}>
-        {showResult && (
-          <SearchResult
-            result={result}
-            selectedItem={selectedItem}
-            data={data}
-            setData={setData}
-          />
-        )}
-      </div>
+      {showResult && result.length > 0 && <SearchResult result={result} />}
     </div>
   );
 };

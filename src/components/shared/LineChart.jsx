@@ -1,45 +1,12 @@
 import { createChart, AreaSeries } from "lightweight-charts";
-import { useEffect, useRef, useState } from "react";
-import axios from "axios";
+import { useEffect, useRef } from "react";
 
-const LineChart = ({ Exch, ExchType, ScripCode }) => {
+
+const LineChart = () => {
+
   const chartContainerRef = useRef(null);
-  const Today = new Date();
-  const fifteenDaysAgo = new Date(Today.getTime() - 15 * 24 * 60 * 60 * 1000);
-  const yy = fifteenDaysAgo.getFullYear();
-  const mm = String(fifteenDaysAgo.getMonth() + 1).padStart(2, "0");
-  const dd = String(fifteenDaysAgo.getDate()).padStart(2, "0");
-  const FromDate = `${yy}-${mm}-${dd}`;
-  const [stockData, setStockData] = useState([]);
-
-  const fetchHistoricalData = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/market-data/historical-data",
-        {
-          Exch,
-          ExchType,
-          ScripCode,
-          TimeFrame: "1d",
-          FromDate,
-          ToDate: Today.toISOString().split("T")[0],
-        }
-      );
-
-      setStockData(response.data);
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching historical data:", error);
-    }
-  };
 
   useEffect(() => {
-    fetchHistoricalData();
-  }, []);
-
-  useEffect(() => {
-    if (stockData.length === 0) return;
-
     if (chartContainerRef.current) {
       const chart = createChart(chartContainerRef.current, {
         layout: {
@@ -88,33 +55,38 @@ const LineChart = ({ Exch, ExchType, ScripCode }) => {
       });
 
       const areaSeries = chart.addSeries(AreaSeries, {
-        lineColor:
-          stockData[stockData.length - 1].value <
-          stockData[stockData.length - 2].value
-            ? "#fb8775"
-            : "#31f742",
-        bottomColor:
-          stockData[stockData.length - 1].value <
-          stockData[stockData.length - 2].value
-            ? "#fad8d3"
-            : "#ccfcd7",
-        topColor: "#ffffff",
-        relativeGradient: true,
-        lineWidth: 2,
         priceLineVisible: false,
         crosshairMarkerVisible: false,
       });
 
-      areaSeries.setData(stockData);
+      const data = [
+        { time: "2023-10-01", value: 100 },
+        { time: "2023-10-02", value: 102 },
+        { time: "2023-10-03", value: 101 },
+        { time: "2023-10-04", value: 105 },
+        { time: "2023-10-05", value: 107 },
+        { time: "2023-10-06", value: 110 },
+        { time: "2023-10-07", value: 108 },
+        { time: "2023-10-08", value: 111 },
+        { time: "2023-10-09", value: 115 },
+        { time: "2023-10-10", value: 120 },
+        { time: "2023-10-11", value: 116 },
+      ];
+
+      areaSeries.setData(data);
       chart.timeScale().fitContent();
 
       return () => {
         chart.remove();
       };
     }
-  }, [stockData]);
+  }, []);
 
-  return <div ref={chartContainerRef} className="w-full h-full" />;
-};
+  return (
+    <div ref={chartContainerRef} 
+    className='w-full h-full'
+    />
+  )
+}
 
-export default LineChart;
+export default LineChart

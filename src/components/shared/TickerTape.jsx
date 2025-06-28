@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import { sharedSocket as socket } from "@/services/socketServices";
+import { io } from "socket.io-client";
+const socket = io("http://localhost:5000", {
+  autoConnect: false,
+});
 
-const TickerTape = ({ marketData }) => {
+const TickerTape = ({marketData}) => {
   const [data, setData] = useState({});
 
   const MARKET_FEED_ITEMS = marketData.slice(0, 3);
@@ -16,7 +19,6 @@ const TickerTape = ({ marketData }) => {
 
   useEffect(() => {
     const handleMarketData = (newData) => {
-      // console.log("ticker tape", newData);
       const token = newData.Token;
       const symbol = SYMBOL_LOOKUP.get(token);
 

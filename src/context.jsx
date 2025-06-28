@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useEffect, useRef, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { showToast } from "./utils/toast";
 
 export const AuthContext = createContext();
@@ -7,7 +7,6 @@ export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const searchInputRef = useRef(null);
 
   // Check if user is logged in when the component mounts
   useEffect(() => {
@@ -71,14 +70,7 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{
-        login,
-        logout,
-        user,
-        loading,
-        searchInputRef,
-        updateProfileDetails,
-      }}
+      value={{ login, logout, user, loading, updateProfileDetails }}
     >
       {children}
     </AuthContext.Provider>
