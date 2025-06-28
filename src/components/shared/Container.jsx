@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import axios from "axios";
 import ButtonRight from "./ButtonRight";
 import ButtonLeft from "./ButtonLeft";
@@ -6,20 +6,22 @@ import LoadingSpinner from "./LoadingSpinner";
 import InfoCard from "./InfoCard";
 import Watchlist from "./Watchlist";
 import { WATCHLIST_FEED_ITEM } from "@/data";
-
-const SYMBOL_LOOKUP = new Map(
-  WATCHLIST_FEED_ITEM.map((item) => [item.ScripCode, item.symbol])
-);
-
-const TARGET_SCRIPS = new Set(
-  WATCHLIST_FEED_ITEM.map((item) => item.ScripCode)
-);
+import { AuthContext } from "@/context";
 
 const Container = () => {
+  const {
+    user: { watchlist },
+  } = useContext(AuthContext);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
   const containerRef = useRef(null);
   const visibleCards = 3;
+
+  const SYMBOL_LOOKUP = new Map(
+    watchlist.map((item) => [item.ScripCode, item.Name])
+  );
+
+  const TARGET_SCRIPS = new Set(watchlist.map((item) => item.ScripCode));
 
   // Define item width and gap for slide calculation
   let itemWidth = Math.ceil(containerWidth / visibleCards);
@@ -66,14 +68,14 @@ const Container = () => {
               transform: `translateX(-${currentIndex * itemWidth}px)`,
             }}
           >
-            {WATCHLIST_FEED_ITEM.length === 0 ? (
+            {watchlist === 0 ? (
               <div className="h-[150px] w-full">
                 <LoadingSpinner />
               </div>
             ) : (
               <InfoCard
                 itemWidth={itemWidth}
-                WATCHLIST_FEED_ITEM={WATCHLIST_FEED_ITEM}
+                watchlist={watchlist}
                 SYMBOL_LOOKUP={SYMBOL_LOOKUP}
                 TARGET_SCRIPS={TARGET_SCRIPS}
               />
@@ -92,7 +94,7 @@ const Container = () => {
 
         <div className="drop-shadow-sm/30 h-100 bg-white col-span-1 rounded-md overflow-hidden">
           <Watchlist
-            WATCHLIST_FEED_ITEM={WATCHLIST_FEED_ITEM}
+            watchlist={watchlist}
             SYMBOL_LOOKUP={SYMBOL_LOOKUP}
             TARGET_SCRIPS={TARGET_SCRIPS}
           />

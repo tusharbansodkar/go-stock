@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import LineChart from "./LineChart";
 import { sharedSocket as socket } from "@/services/socketServices";
 
-const InfoCard = ({
-  itemWidth,
-  WATCHLIST_FEED_ITEM,
-  SYMBOL_LOOKUP,
-  TARGET_SCRIPS,
-}) => {
+const InfoCard = ({ itemWidth, watchlist, SYMBOL_LOOKUP, TARGET_SCRIPS }) => {
   const [data, setData] = useState({});
+  const payload = watchlist.map((item) => ({
+    Exch: item.Exch,
+    ExchType: item.ExchType,
+    ScripCode: parseInt(item.ScripCode),
+  }));
 
   useEffect(() => {
-    socket.emit("subscribe", WATCHLIST_FEED_ITEM);
+    socket.emit("subscribe", payload);
 
     socket.on("marketData", (newData) => {
       const token = newData.Token;

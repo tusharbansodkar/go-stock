@@ -9,9 +9,14 @@ const exchangeMap = {
   M: "MCX",
 };
 
-const Watchlist = ({ WATCHLIST_FEED_ITEM, SYMBOL_LOOKUP, TARGET_SCRIPS }) => {
-  const [data, setData] = useState({});
+const Watchlist = ({ watchlist, SYMBOL_LOOKUP, TARGET_SCRIPS }) => {
   const { searchInputRef } = useContext(AuthContext);
+  const [data, setData] = useState({});
+  const payload = watchlist.map((item) => ({
+    Exch: item.Exch,
+    ExchType: item.ExchType,
+    ScripCode: parseInt(item.ScripCode),
+  }));
 
   const handleClick = () => {
     if (searchInputRef.current) {
@@ -22,7 +27,7 @@ const Watchlist = ({ WATCHLIST_FEED_ITEM, SYMBOL_LOOKUP, TARGET_SCRIPS }) => {
   useEffect(() => {
     socket.on("connect", () => {
       console.log("watchlist connected");
-      socket.emit("subscribe", WATCHLIST_FEED_ITEM);
+      socket.emit("subscribe", payload);
     });
 
     socket.on("marketData", (newData) => {
@@ -41,7 +46,7 @@ const Watchlist = ({ WATCHLIST_FEED_ITEM, SYMBOL_LOOKUP, TARGET_SCRIPS }) => {
     socket.connect();
 
     return () => {
-      socket.emit("unsubscribe", WATCHLIST_FEED_ITEM);
+      socket.emit("unsubscribe", watchlist);
     };
   }, [TARGET_SCRIPS]);
 
