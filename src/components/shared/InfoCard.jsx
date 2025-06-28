@@ -49,7 +49,11 @@ const InfoCard = ({ marketData, itemWidth }) => {
             <div className="flex justify-evenly items-center  w-full h-[50%]">
               <p className="font-bold text-2xl">{symbol}</p>
               <div className="w-[50%] h-full">
-                <LineChart />
+                <LineChart
+                  Exch={stockData.Exch}
+                  ExchType={stockData.ExchType}
+                  ScripCode={stockData.Token}
+                />
               </div>
             </div>
 
