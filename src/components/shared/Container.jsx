@@ -5,15 +5,17 @@ import ButtonLeft from "./ButtonLeft";
 import LoadingSpinner from "./LoadingSpinner";
 import InfoCard from "./InfoCard";
 import Watchlist from "./Watchlist";
+import { WATCHLIST_FEED_ITEM } from "@/data";
 
-const Container = ({ MARKET_FEED_ITEMS }) => {
-  const payload = MARKET_FEED_ITEMS.map(({ Exch, ExchType, ScripCode }) => ({
-    Exch,
-    ExchType,
-    ScripCode,
-  }));
+const SYMBOL_LOOKUP = new Map(
+  WATCHLIST_FEED_ITEM.map((item) => [item.ScripCode, item.symbol])
+);
 
-  const [marketData, setMarketData] = useState([]);
+const TARGET_SCRIPS = new Set(
+  WATCHLIST_FEED_ITEM.map((item) => item.ScripCode)
+);
+
+const Container = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
   const containerRef = useRef(null);
@@ -24,7 +26,7 @@ const Container = ({ MARKET_FEED_ITEMS }) => {
   const gap = 12; // Corresponds to gap-3 (0.75rem = 12px assuming 1rem = 16px)
 
   const showNext = () => {
-    if (marketData.length === 0) return;
+    // if (marketData.length === 0) return;
 
     setCurrentIndex((prevIndex) =>
       prevIndex === 10 - visibleCards ? prevIndex : prevIndex + 1
@@ -46,17 +48,6 @@ const Container = ({ MARKET_FEED_ITEMS }) => {
 
     resizedObserver.observe(containerRef.current);
 
-    axios
-      .post("http://localhost:5000/api/market-data/market-feed", payload, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        setMarketData(response.data);
-      })
-      .catch((error) => console.log("error fetching market data", error));
-
     return () => {
       resizedObserver.disconnect(containerRef.current);
     };
@@ -75,12 +66,17 @@ const Container = ({ MARKET_FEED_ITEMS }) => {
               transform: `translateX(-${currentIndex * itemWidth}px)`,
             }}
           >
-            {marketData.length === 0 ? (
+            {WATCHLIST_FEED_ITEM.length === 0 ? (
               <div className="h-[150px] w-full">
                 <LoadingSpinner />
               </div>
             ) : (
-              <InfoCard marketData={marketData} itemWidth={itemWidth} />
+              <InfoCard
+                itemWidth={itemWidth}
+                WATCHLIST_FEED_ITEM={WATCHLIST_FEED_ITEM}
+                SYMBOL_LOOKUP={SYMBOL_LOOKUP}
+                TARGET_SCRIPS={TARGET_SCRIPS}
+              />
             )}
           </div>
           <div className="absolute top-1/2 left-0 bg-gray-300 hover:bg-gray-400 text-white tranform -translate-y-1/2 rounded-sm">
@@ -95,7 +91,11 @@ const Container = ({ MARKET_FEED_ITEMS }) => {
         <div className="bg-amber-600 col-span-2 rounded-md"></div>
 
         <div className="drop-shadow-sm/30 h-100 bg-white col-span-1 rounded-md overflow-hidden">
-          <Watchlist />
+          <Watchlist
+            WATCHLIST_FEED_ITEM={WATCHLIST_FEED_ITEM}
+            SYMBOL_LOOKUP={SYMBOL_LOOKUP}
+            TARGET_SCRIPS={TARGET_SCRIPS}
+          />
         </div>
       </div>
     </div>

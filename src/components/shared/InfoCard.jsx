@@ -1,18 +1,13 @@
 import { useEffect, useState } from "react";
 import LineChart from "./LineChart";
 import { sharedSocket as socket } from "@/services/socketServices";
-import { WATCHLIST_FEED_ITEM } from "@/data";
-import Watchlist from "./Watchlist";
 
-const SYMBOL_LOOKUP = new Map(
-  WATCHLIST_FEED_ITEM.map((item) => [item.ScripCode, item.symbol])
-);
-
-const TARGET_SCRIPS = new Set(
-  WATCHLIST_FEED_ITEM.map((item) => item.ScripCode)
-);
-
-const InfoCard = ({ marketData, itemWidth }) => {
+const InfoCard = ({
+  itemWidth,
+  WATCHLIST_FEED_ITEM,
+  SYMBOL_LOOKUP,
+  TARGET_SCRIPS,
+}) => {
   const [data, setData] = useState({});
 
   useEffect(() => {
@@ -33,7 +28,7 @@ const InfoCard = ({ marketData, itemWidth }) => {
     return () => {
       // socket.off();
     };
-  }, [marketData]);
+  }, [TARGET_SCRIPS]);
 
   return (
     <>

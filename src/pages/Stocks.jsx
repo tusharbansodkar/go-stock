@@ -8,7 +8,7 @@ const Stocks = () => {
   return (
     <div>
       <TickerTape marketData={MARKET_FEED_DATA} />
-      <Container MARKET_FEED_ITEMS={MARKET_FEED_DATA} />
+      <Container />
     </div>
   );
 };

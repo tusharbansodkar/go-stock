@@ -1,16 +1,7 @@
 import { Plus, Trash2 } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
-import { WATCHLIST_FEED_ITEM } from "@/data";
 import { AuthContext } from "@/context";
 import { sharedSocket as socket } from "@/services/socketServices";
-
-const SYMBOL_LOOKUP = new Map(
-  WATCHLIST_FEED_ITEM.map((item) => [item.ScripCode, item.symbol])
-);
-
-const TARGET_SCRIPS = new Set(
-  WATCHLIST_FEED_ITEM.map((item) => item.ScripCode)
-);
 
 const exchangeMap = {
   N: "NSE",
@@ -18,7 +9,7 @@ const exchangeMap = {
   M: "MCX",
 };
 
-const Watchlist = () => {
+const Watchlist = ({ WATCHLIST_FEED_ITEM, SYMBOL_LOOKUP, TARGET_SCRIPS }) => {
   const [data, setData] = useState({});
   const { searchInputRef } = useContext(AuthContext);
 
@@ -36,7 +27,6 @@ const Watchlist = () => {
 
     socket.on("marketData", (newData) => {
       const token = newData.Token;
-      // console.log("watchlist", newData);
       const symbol = SYMBOL_LOOKUP.get(token);
 
       if (symbol && TARGET_SCRIPS.has(token)) {
@@ -53,7 +43,7 @@ const Watchlist = () => {
     return () => {
       socket.emit("unsubscribe", WATCHLIST_FEED_ITEM);
     };
-  }, []);
+  }, [TARGET_SCRIPS]);
 
   return (
     <div className="h-full p-4 flex flex-col overflow-auto custom-scrollbar">
