@@ -9,12 +9,12 @@ const Dashboard = () => {
 
   useEffect(() => {
     navigate("/dashboard/stocks");
-  }, [])
-  
+  }, []);
+
   return (
-    <div className="flex ">
+    <div className="flex h-svh">
       <Sidebar />
-      <main className="flex-1">
+      <main className="h-full flex-1 overflow-hidden ">
         <Navbar />
         <Outlet />
       </main>

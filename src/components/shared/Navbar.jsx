@@ -31,9 +31,9 @@ const Navbar = () => {
             src="https://github.com/shadcn.png"
             className="w-full h-full rounded-full"
           />
-          {/* <AvatarFallback className="text-gray-500 text-xl font-bold  ">
+          <AvatarFallback className="text-gray-500 text-xl font-bold  ">
             {user?.firstName?.charAt(0) || "U"}
-          </AvatarFallback> */}
+          </AvatarFallback>
         </Avatar>
         <div className="flex items-center gap-2">
           <h2 className="font-semibold text-gray-600 ">
