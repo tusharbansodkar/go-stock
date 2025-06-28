@@ -43,11 +43,11 @@ const InfoCard = ({ marketData, itemWidth }) => {
         return (
           <div
             key={index}
-            className={`leading-7 h-[180px] shadow-lg/25 rounded-md p-2`}
+            className={`leading-7 h-[180px] shadow-lg/25 rounded-md`}
             style={{ minWidth: `${itemWidth - 12}px` }}
           >
-            <div className="flex justify-evenly items-center  w-full h-[50%]">
-              <p className="font-bold text-2xl">{symbol}</p>
+            <div className="flex justify-evenly items-center w-full h-[50%]">
+              <p className="w-[50%] text-center font-bold text-2xl">{symbol}</p>
               <div className="w-[50%] h-full">
                 <LineChart
                   Exch={stockData.Exch}

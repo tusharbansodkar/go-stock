@@ -17,7 +17,7 @@ const Container = ({ MARKET_FEED_ITEMS }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
   const containerRef = useRef(null);
-  const visibleCards = 4;
+  const visibleCards = 3;
 
   // Define item width and gap for slide calculation
   let itemWidth = Math.ceil(containerWidth / visibleCards);
