@@ -47,10 +47,10 @@ const Watchlist = ({
       );
 
       if (response.status === 200) {
-        const keys = Object.keys(data);
-        const newData = { ...data };
+        const keys = Object.keys(watchlistData);
+        const newData = { ...watchlistData };
         keys.forEach((key) => {
-          if (data[key]._id === _id) {
+          if (watchlistData[key]._id === _id) {
             delete newData[key];
           }
         });
