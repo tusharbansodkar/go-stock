@@ -1,33 +1,17 @@
-import { useEffect, useState, useRef, useContext } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import ButtonRight from "./ButtonRight";
 import ButtonLeft from "./ButtonLeft";
 import LoadingSpinner from "./LoadingSpinner";
 import InfoCard from "./InfoCard";
 import Watchlist from "./Watchlist";
-import { AuthContext } from "@/context";
 
 const Container = () => {
-  const {
-    user: { watchlist },
-    loading,
-  } = useContext(AuthContext);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
   const [watchlistData, setWatchlistData] = useState({});
   const containerRef = useRef(null);
   const visibleCards = 3;
-
-  const SYMBOL_LOOKUP = new Map(
-    watchlist.map((item) => [
-      parseInt(item.ScripCode),
-      { Name: item.Name, _id: item._id },
-    ])
-  );
-
-  const TARGET_SCRIPS = new Set(
-    watchlist.map((item) => parseInt(item.ScripCode))
-  );
 
   // Define item width and gap for slide calculation
   let itemWidth = Math.ceil(containerWidth / visibleCards);
@@ -73,18 +57,18 @@ const Container = () => {
               transform: `translateX(-${currentIndex * itemWidth}px)`,
             }}
           >
-            {loading ? (
+            {/* {loading ? (
               <div className="h-[150px] w-full">
                 <LoadingSpinner />
               </div>
             ) : (
-              <InfoCard
-                itemWidth={itemWidth}
-                watchlist={watchlist}
-                SYMBOL_LOOKUP={SYMBOL_LOOKUP}
-                TARGET_SCRIPS={TARGET_SCRIPS}
-              />
-            )}
+              
+            )} */}
+            <InfoCard
+              itemWidth={itemWidth}
+              watchlistData={watchlistData}
+              setWatchlistData={setWatchlistData}
+            />
           </div>
           <div className="absolute top-1/2 left-0 bg-gray-300 hover:bg-gray-400 text-white tranform -translate-y-1/2 rounded-sm">
             <ButtonLeft handleClick={showPrevious} />
@@ -99,11 +83,8 @@ const Container = () => {
 
         <div className="drop-shadow-sm/30 h-100 bg-white col-span-1 rounded-md overflow-hidden">
           <Watchlist
-            watchlist={watchlist}
             watchlistData={watchlistData}
             setWatchlistData={setWatchlistData}
-            SYMBOL_LOOKUP={SYMBOL_LOOKUP}
-            TARGET_SCRIPS={TARGET_SCRIPS}
           />
         </div>
       </div>
