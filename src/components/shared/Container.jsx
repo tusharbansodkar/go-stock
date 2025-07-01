@@ -5,33 +5,39 @@ import ButtonLeft from "./ButtonLeft";
 import LoadingSpinner from "./LoadingSpinner";
 import InfoCard from "./InfoCard";
 import Watchlist from "./Watchlist";
-import { WATCHLIST_FEED_ITEM } from "@/data";
 import { AuthContext } from "@/context";
 
 const Container = () => {
   const {
     user: { watchlist },
+    loading,
   } = useContext(AuthContext);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
+  const [watchlistData, setWatchlistData] = useState({});
   const containerRef = useRef(null);
   const visibleCards = 3;
 
   const SYMBOL_LOOKUP = new Map(
-    watchlist.map((item) => [item.ScripCode, item.Name])
+    watchlist.map((item) => [
+      parseInt(item.ScripCode),
+      { Name: item.Name, _id: item._id },
+    ])
   );
 
-  const TARGET_SCRIPS = new Set(watchlist.map((item) => item.ScripCode));
+  const TARGET_SCRIPS = new Set(
+    watchlist.map((item) => parseInt(item.ScripCode))
+  );
 
   // Define item width and gap for slide calculation
   let itemWidth = Math.ceil(containerWidth / visibleCards);
   const gap = 12; // Corresponds to gap-3 (0.75rem = 12px assuming 1rem = 16px)
 
   const showNext = () => {
-    // if (marketData.length === 0) return;
+    if (watchlist.length === 0) return;
 
     setCurrentIndex((prevIndex) =>
-      prevIndex === 10 - visibleCards ? prevIndex : prevIndex + 1
+      prevIndex === watchlist.length - visibleCards ? prevIndex : prevIndex + 1
     );
   };
 
@@ -49,7 +55,6 @@ const Container = () => {
     });
 
     resizedObserver.observe(containerRef.current);
-
     return () => {
       resizedObserver.disconnect(containerRef.current);
     };
@@ -68,7 +73,7 @@ const Container = () => {
               transform: `translateX(-${currentIndex * itemWidth}px)`,
             }}
           >
-            {watchlist === 0 ? (
+            {loading ? (
               <div className="h-[150px] w-full">
                 <LoadingSpinner />
               </div>
@@ -95,6 +100,8 @@ const Container = () => {
         <div className="drop-shadow-sm/30 h-100 bg-white col-span-1 rounded-md overflow-hidden">
           <Watchlist
             watchlist={watchlist}
+            watchlistData={watchlistData}
+            setWatchlistData={setWatchlistData}
             SYMBOL_LOOKUP={SYMBOL_LOOKUP}
             TARGET_SCRIPS={TARGET_SCRIPS}
           />

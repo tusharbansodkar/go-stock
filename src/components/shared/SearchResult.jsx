@@ -2,6 +2,8 @@ import { ShoppingBasket } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { sharedSocket as socket } from "@/services/socketServices";
 import { AuthContext } from "@/context";
+import { showToast } from "@/utils/toast";
+import axios from "axios";
 
 const exchangeMap = {
   N: "NSE",
@@ -11,6 +13,7 @@ const exchangeMap = {
 
 const SearchResult = ({ result, selectedItem, data, setData }) => {
   const [selectedOption, setSelectedOption] = useState("All");
+  const { fetchWatchlist } = useContext(AuthContext);
 
   const payload = result.map(({ Exch, ExchType, ScripCode }) => {
     return {
@@ -23,9 +26,34 @@ const SearchResult = ({ result, selectedItem, data, setData }) => {
   const SYMBOL_LOOKUP = new Map(
     result.map((item) => [
       item.ScripCode,
-      { Name: item.Name, FullName: item.FullName },
+      { Name: item.Name, FullName: item.FullName, _id: item._id },
     ])
   );
+
+  const addToWatchlist = async (_id) => {
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/user/watchlist",
+        {
+          scripId: _id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        fetchWatchlist();
+        showToast.success("Added to watchlist");
+      }
+    } catch (error) {
+      showToast.error("Something went wrong");
+    }
+  };
 
   const handleClick = (option) => {
     setSelectedOption(option);
@@ -42,7 +70,7 @@ const SearchResult = ({ result, selectedItem, data, setData }) => {
 
       if (!symbolData) return;
 
-      const { Name: symbol, FullName: fullName } = symbolData;
+      const { Name: symbol, FullName: fullName, _id } = symbolData;
       const uniqueSymbol = `${symbol}-${newData.Exch}`;
 
       if (uniqueSymbol) {
@@ -51,6 +79,7 @@ const SearchResult = ({ result, selectedItem, data, setData }) => {
           [uniqueSymbol]: {
             ...newData,
             FullName: fullName,
+            _id,
           },
         }));
       }
@@ -96,7 +125,6 @@ const SearchResult = ({ result, selectedItem, data, setData }) => {
       {result.length > 0 ? (
         Object.entries(data).map(([key, stockData], index) => {
           const [name, exch] = key.split("-");
-
           return (
             <div
               key={index}
@@ -121,9 +149,7 @@ const SearchResult = ({ result, selectedItem, data, setData }) => {
               >
                 <ShoppingBasket
                   className="text-green-500"
-                  onClick={() => {
-                    console.log("add to watchlist");
-                  }}
+                  onClick={() => addToWatchlist(stockData._id)}
                 />
               </span>
               <div className="w-[30%] text-right">

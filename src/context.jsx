@@ -69,6 +69,30 @@ const AuthProvider = ({ children }) => {
     setUser((prevUser) => ({ ...prevUser, ...updatedData }));
   };
 
+  // fetch updated watchlist
+  const fetchWatchlist = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        "http://localhost:5000/api/user/watchlist",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setUser((prevData) => ({
+          ...prevData,
+          watchlist: response.data,
+        }));
+      }
+    } catch (error) {
+      console.error("Error fetching watchlist:", error);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -78,6 +102,7 @@ const AuthProvider = ({ children }) => {
         loading,
         searchInputRef,
         updateProfileDetails,
+        fetchWatchlist,
       }}
     >
       {children}

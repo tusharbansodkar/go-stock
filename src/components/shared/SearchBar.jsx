@@ -60,7 +60,6 @@ const SearchBar = () => {
         .get(`http://localhost:5000/api/search?string=${currentValue}`)
         .then((res) => {
           const data = res.data;
-          console.log(data);
           setResult(data);
         })
         .catch((err) => {
