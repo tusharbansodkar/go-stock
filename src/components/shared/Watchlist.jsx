@@ -12,14 +12,21 @@ const exchangeMap = {
   M: "MCX",
 };
 
-const Watchlist = ({
-  watchlist,
-  watchlistData,
-  setWatchlistData,
-  SYMBOL_LOOKUP,
-  TARGET_SCRIPS,
-}) => {
+const Watchlist = ({ watchlistData, setWatchlistData }) => {
   const { searchInputRef, fetchWatchlist } = useContext(AuthContext);
+  const {
+    user: { watchlist },
+  } = useContext(AuthContext);
+  const SYMBOL_LOOKUP = new Map(
+    watchlist.map((item) => [
+      parseInt(item.ScripCode),
+      { Name: item.Name, _id: item._id },
+    ])
+  );
+
+  const TARGET_SCRIPS = new Set(
+    watchlist.map((item) => parseInt(item.ScripCode))
+  );
 
   const payload = watchlist.map((item) => ({
     Exch: item.Exch,
