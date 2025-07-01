@@ -2,6 +2,9 @@ import { Plus, Trash2 } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/context";
 import { sharedSocket as socket } from "@/services/socketServices";
+import { showToast } from "@/utils/toast";
+import axios from "axios";
+import { WATCHLIST_FEED_ITEM } from "@/data";
 
 const exchangeMap = {
   N: "NSE",
@@ -9,9 +12,20 @@ const exchangeMap = {
   M: "MCX",
 };
 
-const Watchlist = ({ WATCHLIST_FEED_ITEM, SYMBOL_LOOKUP, TARGET_SCRIPS }) => {
-  const [data, setData] = useState({});
-  const { searchInputRef } = useContext(AuthContext);
+const Watchlist = ({
+  watchlist,
+  watchlistData,
+  setWatchlistData,
+  SYMBOL_LOOKUP,
+  TARGET_SCRIPS,
+}) => {
+  const { searchInputRef, fetchWatchlist } = useContext(AuthContext);
+
+  const payload = watchlist.map((item) => ({
+    Exch: item.Exch,
+    ExchType: item.ExchType,
+    ScripCode: parseInt(item.ScripCode),
+  }));
 
   const handleClick = () => {
     if (searchInputRef.current) {
@@ -19,31 +33,80 @@ const Watchlist = ({ WATCHLIST_FEED_ITEM, SYMBOL_LOOKUP, TARGET_SCRIPS }) => {
     }
   };
 
-  useEffect(() => {
-    socket.on("connect", () => {
-      console.log("watchlist connected");
-      socket.emit("subscribe", WATCHLIST_FEED_ITEM);
-    });
+  const removeFromWatchlist = async (_id) => {
+    const token = localStorage.getItem("token");
 
-    socket.on("marketData", (newData) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:5000/api/user/watchlist/${_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        const keys = Object.keys(data);
+        const newData = { ...data };
+        keys.forEach((key) => {
+          if (data[key]._id === _id) {
+            delete newData[key];
+          }
+        });
+
+        fetchWatchlist();
+        setWatchlistData(newData);
+        showToast.success("Removed from watchlist");
+      }
+    } catch (error) {
+      showToast.error("Something went wrong");
+    }
+  };
+
+  useEffect(() => {
+    if (watchlist.length === 0) return;
+
+    const handleConnect = () => {
+      console.log("watchlist connected");
+      socket.emit("subscribe", payload);
+    };
+
+    const handleMarketData = (newData) => {
       const token = newData.Token;
-      const symbol = SYMBOL_LOOKUP.get(token);
+      const symbolData = SYMBOL_LOOKUP.get(token);
+
+      if (!symbolData) return;
+      const { Name: symbol, _id } = symbolData;
+      const uniqueSymbol = `${symbol}-${newData.Exch}`;
 
       if (symbol && TARGET_SCRIPS.has(token)) {
-        setData((prevData) => ({
+        setWatchlistData((prevData) => ({
           ...prevData,
-          [symbol]: newData,
+          [uniqueSymbol]: {
+            ...newData,
+            _id,
+          },
         }));
       }
-    });
+    };
+
+    socket.on("connect", handleConnect);
+
+    socket.on("marketData", handleMarketData);
 
     // Connect after setting up listeners
-    socket.connect();
+    if (socket.connected) {
+      handleConnect();
+    } else {
+      socket.connect();
+    }
 
     return () => {
-      socket.emit("unsubscribe", WATCHLIST_FEED_ITEM);
+      socket.off("marketData", handleMarketData);
+      socket.off("connect", handleConnect);
     };
-  }, [TARGET_SCRIPS]);
+  }, [watchlist]);
 
   return (
     <div className="h-full p-4 flex flex-col overflow-auto custom-scrollbar">
@@ -54,45 +117,57 @@ const Watchlist = ({ WATCHLIST_FEED_ITEM, SYMBOL_LOOKUP, TARGET_SCRIPS }) => {
         </button>
       </div>
       <ul className="flex-grow">
-        {Object.entries(data).map(([symbol, stockData], index) => {
-          let priceChange = (stockData.LastRate - stockData.PClose).toFixed(2);
-          let changePcnt = ((priceChange / stockData.PClose) * 100).toFixed(2);
+        {Object.entries(watchlistData)
+          .sort((a, b) => a[0].localeCompare(b[0]))
+          .map(([symbol, stockData], index) => {
+            let priceChange = (stockData.LastRate - stockData.PClose).toFixed(
+              2
+            );
+            let changePcnt = ((priceChange / stockData.PClose) * 100).toFixed(
+              2
+            );
 
-          return (
-            <li
-              key={index}
-              className="flex justify-between items-center group tracking-tight border-b-2 border-gray-300 p-2 hover:bg-gray-100"
-            >
-              <div className="w-[40%] truncate">
-                <p className="font-semibold text-sm">{symbol}</p>
-                <p className="text-gray-800 w-fit rounded-xs text-xs p-1 bg-gray-200">
-                  {exchangeMap[stockData.Exch]}
-                </p>
-              </div>
-              <span
-                className="opacity-0 group-hover:opacity-100 inline ml-2 cursor-pointer"
-                title="Remove from watchlist"
+            return (
+              <li
+                key={index}
+                className="flex justify-between items-center group tracking-tight border-b-2 border-gray-300 p-2 hover:bg-gray-100"
               >
-                <Trash2 className="text-red-500" size={20} />
-              </span>
-              <div className="text-right">
-                <p className="font-semibold ">
-                  {stockData.LastRate.toLocaleString("en-IN", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}
-                </p>
-                <p
-                  className={
-                    priceChange > 0 ? "text-green-500" : "text-red-500"
-                  }
+                <div className="w-[40%] truncate">
+                  <p className="font-semibold text-sm">
+                    {symbol.split("-")[0]}
+                  </p>
+                  <p className="text-gray-800 w-fit rounded-xs text-xs p-1 bg-gray-200">
+                    {exchangeMap[stockData.Exch]}
+                  </p>
+                </div>
+                <span
+                  className="opacity-0 group-hover:opacity-100 inline ml-2 cursor-pointer"
+                  title="Remove from watchlist"
                 >
-                  {changePcnt > 0 ? "+" + changePcnt : "" + changePcnt}%
-                </p>
-              </div>
-            </li>
-          );
-        })}
+                  <Trash2
+                    className="text-red-500"
+                    size={20}
+                    onClick={() => removeFromWatchlist(stockData._id)}
+                  />
+                </span>
+                <div className="text-right">
+                  <p className="font-semibold ">
+                    {stockData.LastRate.toLocaleString("en-IN", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </p>
+                  <p
+                    className={
+                      priceChange > 0 ? "text-green-500" : "text-red-500"
+                    }
+                  >
+                    {changePcnt > 0 ? "+" + changePcnt : "" + changePcnt}%
+                  </p>
+                </div>
+              </li>
+            );
+          })}
       </ul>
     </div>
   );
