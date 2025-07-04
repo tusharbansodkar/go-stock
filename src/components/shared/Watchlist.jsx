@@ -74,6 +74,14 @@ const Watchlist = ({ watchlistData, setWatchlistData, setSelectedStock }) => {
   useEffect(() => {
     if (watchlist.length === 0) return;
 
+    const { Exch, ExchType, ScripCode, FullName } = watchlist[0];
+    setSelectedStock({
+      Exch,
+      ExchType,
+      Token: ScripCode,
+      FullName,
+    });
+
     const handleConnect = () => {
       console.log("watchlist connected");
       socket.emit("subscribe", payload);

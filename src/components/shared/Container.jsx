@@ -11,8 +11,8 @@ const Container = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
   const [watchlistData, setWatchlistData] = useState({});
-  const [selectedStock, setSelectedStock] = useState(null);
   const [watchlistKeys, setWatchlistKeys] = useState([]);
+  const [selectedStock, setSelectedStock] = useState(null);
   const containerRef = useRef(null);
   const visibleCards = 3;
 
@@ -36,7 +36,6 @@ const Container = () => {
 
   useEffect(() => {
     setWatchlistKeys(Object.keys(watchlistData));
-    setSelectedStock(watchlistData[watchlistKeys[0]]);
   }, [watchlistData]);
 
   useEffect(() => {
