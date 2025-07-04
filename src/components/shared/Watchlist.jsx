@@ -12,7 +12,7 @@ const exchangeMap = {
   M: "MCX",
 };
 
-const Watchlist = ({ watchlistData, setWatchlistData }) => {
+const Watchlist = ({ watchlistData, setWatchlistData, setSelectedStock }) => {
   const { searchInputRef, fetchWatchlist } = useContext(AuthContext);
   const {
     user: { watchlist },
@@ -20,7 +20,7 @@ const Watchlist = ({ watchlistData, setWatchlistData }) => {
   const SYMBOL_LOOKUP = new Map(
     watchlist.map((item) => [
       parseInt(item.ScripCode),
-      { Name: item.Name, _id: item._id },
+      { Name: item.Name, FullName: item.FullName, _id: item._id },
     ])
   );
 
@@ -84,7 +84,7 @@ const Watchlist = ({ watchlistData, setWatchlistData }) => {
       const symbolData = SYMBOL_LOOKUP.get(token);
 
       if (!symbolData) return;
-      const { Name: symbol, _id } = symbolData;
+      const { Name: symbol, FullName, _id } = symbolData;
       const uniqueSymbol = `${symbol}-${newData.Exch}`;
 
       if (symbol && TARGET_SCRIPS.has(token)) {
@@ -92,6 +92,7 @@ const Watchlist = ({ watchlistData, setWatchlistData }) => {
           ...prevData,
           [uniqueSymbol]: {
             ...newData,
+            FullName,
             _id,
           },
         }));
@@ -139,7 +140,12 @@ const Watchlist = ({ watchlistData, setWatchlistData }) => {
                 key={index}
                 className="flex justify-between items-center group tracking-tight border-b-2 border-gray-300 p-2 hover:bg-gray-100"
               >
-                <div className="w-[40%] truncate">
+                <div
+                  className="w-[50%] truncate cursor-pointer"
+                  onClick={() => {
+                    setSelectedStock(watchlistData[symbol]);
+                  }}
+                >
                   <p className="font-semibold text-sm">
                     {symbol.split("-")[0]}
                   </p>
@@ -148,7 +154,7 @@ const Watchlist = ({ watchlistData, setWatchlistData }) => {
                   </p>
                 </div>
                 <span
-                  className="opacity-0 group-hover:opacity-100 inline ml-2 cursor-pointer"
+                  className="opacity-0 group-hover:opacity-100 inline ml-2 cursor-pointer "
                   title="Remove from watchlist"
                 >
                   <Trash2

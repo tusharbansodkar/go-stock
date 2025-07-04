@@ -5,11 +5,13 @@ import ButtonLeft from "./ButtonLeft";
 import LoadingSpinner from "./LoadingSpinner";
 import InfoCard from "./InfoCard";
 import Watchlist from "./Watchlist";
+import CandlestickChart from "./CandlestickChart";
 
 const Container = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
   const [watchlistData, setWatchlistData] = useState({});
+  const [selectedStock, setSelectedStock] = useState(null);
   const containerRef = useRef(null);
   const visibleCards = 3;
 
@@ -28,6 +30,10 @@ const Container = () => {
   const showPrevious = () => {
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? 0 : prevIndex - 1));
   };
+
+  useEffect(() => {
+    setSelectedStock(watchlistData[Object.keys(watchlistData)[0]]);
+  }, [watchlistData]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -68,6 +74,7 @@ const Container = () => {
               itemWidth={itemWidth}
               watchlistData={watchlistData}
               setWatchlistData={setWatchlistData}
+              setSelectedStock={setSelectedStock}
             />
           </div>
           <div className="absolute top-1/2 left-0 bg-gray-300 hover:bg-gray-400 text-white tranform -translate-y-1/2 rounded-sm">
@@ -79,12 +86,17 @@ const Container = () => {
           </div>
         </div>
 
-        <div className="bg-amber-600 col-span-2 rounded-md"></div>
+        <div className="drop-shadow-sm/30 h-100 bg-white col-span-2 rounded-md">
+          {selectedStock ? (
+            <CandlestickChart selectedStock={selectedStock} />
+          ) : null}
+        </div>
 
         <div className="drop-shadow-sm/30 h-100 bg-white col-span-1 rounded-md overflow-hidden">
           <Watchlist
             watchlistData={watchlistData}
             setWatchlistData={setWatchlistData}
+            setSelectedStock={setSelectedStock}
           />
         </div>
       </div>
