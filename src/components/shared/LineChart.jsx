@@ -26,8 +26,12 @@ const LineChart = ({ Exch, ExchType, ScripCode }) => {
         }
       );
 
-      setStockData(response.data);
-      return response.data;
+      const data = response.data.map((item) => ({
+        time: item[0].substring(0, 10),
+        value: item[4],
+      }));
+
+      setStockData(data);
     } catch (error) {
       console.error("Error fetching historical data:", error);
     }

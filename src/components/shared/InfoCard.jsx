@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import LineChart from "./LineChart";
 import { sharedSocket as socket } from "@/services/socketServices";
 
-const InfoCard = ({ itemWidth, watchlistData, setWatchlistData }) => {
+const InfoCard = ({
+  itemWidth,
+  watchlistData,
+  setWatchlistData,
+  setSelectedStock,
+}) => {
   return (
     <>
       {Object.keys(watchlistData).length === 0 ? (
@@ -20,8 +25,11 @@ const InfoCard = ({ itemWidth, watchlistData, setWatchlistData }) => {
             return (
               <div
                 key={index}
-                className={`leading-7 h-[180px] shadow-lg/25 rounded-md`}
+                className={`leading-7 h-[180px] shadow-lg/25 rounded-md cursor-pointer`}
                 style={{ minWidth: `${itemWidth - 12}px` }}
+                onClick={() => {
+                  setSelectedStock(watchlistData[symbol]);
+                }}
               >
                 <div className="flex justify-evenly items-center w-full h-[50%]">
                   <p className="w-[50%] text-center font-bold text-2xl">
