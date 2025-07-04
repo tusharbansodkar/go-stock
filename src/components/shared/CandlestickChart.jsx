@@ -9,7 +9,7 @@ const exchangeMap = {
 };
 
 const CandlestickChart = ({ selectedStock }) => {
-  const { Exch, ExchType, Token: ScripCode } = selectedStock;
+  const { Exch, ExchType, Token: ScripCode, FullName } = selectedStock;
   const chartContainerRef = useRef(null);
   const today = new Date();
   const sixMonthsAgo = new Date(today.getTime() - 180 * 24 * 60 * 60 * 1000);
@@ -86,7 +86,7 @@ const CandlestickChart = ({ selectedStock }) => {
   return (
     <div ref={chartContainerRef} className="w-full h-full relative">
       <p className="absolute text-lg font-semibold top-1 left-4 bg-white p-2 z-2">
-        {`${selectedStock.FullName} | ${exchangeMap[Exch]}`}
+        {`${FullName} | ${exchangeMap[Exch]}`}
       </p>
     </div>
   );
