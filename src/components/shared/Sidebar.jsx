@@ -9,11 +9,6 @@ const Sidebar = () => {
       icon: <ChartSpline size={28} />,
       path: "/dashboard/stocks",
     },
-    {
-      text: "Commodities",
-      icon: <ChartArea size={28} />,
-      path: "/dashboard/commodities",
-    },
     { text: "News", icon: <Newspaper size={28} />, path: "/dashboard/news" },
     {
       text: "Profile",

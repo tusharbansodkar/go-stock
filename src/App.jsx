@@ -3,7 +3,6 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Stocks from "./pages/Stocks";
-import Commodities from "./pages/Commodities";
 import Profile from "./pages/Profile";
 import News from "./pages/News";
 import AuthProvider, { AuthContext } from "./context";
@@ -36,7 +35,6 @@ function App() {
             }
           >
             <Route path="stocks" element={<Stocks />} />
-            <Route path="commodities" element={<Commodities />} />
             <Route path="profile" element={<Profile />} />
             <Route path="news" element={<News />} />
           </Route>

@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import ButtonRight from "./ButtonRight";
 import ButtonLeft from "./ButtonLeft";
 import LoadingSpinner from "./LoadingSpinner";
