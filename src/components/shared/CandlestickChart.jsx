@@ -41,7 +41,7 @@ const CandlestickChart = ({ selectedStock }) => {
         time: new Date(item[0]).getTime(),
       }));
 
-      console.log(data);
+      // console.log(data);
 
       setStockFeed(data);
     } catch (error) {
@@ -85,7 +85,7 @@ const CandlestickChart = ({ selectedStock }) => {
 
   return (
     <div ref={chartContainerRef} className="w-full h-full relative">
-      <p className="absolute text-lg font-semibold top-1 left-4 bg-white p-1 z-10">
+      <p className="absolute text-lg font-semibold top-1 left-4 bg-white p-2 z-2">
         {`${selectedStock.FullName} | ${exchangeMap[Exch]}`}
       </p>
     </div>
