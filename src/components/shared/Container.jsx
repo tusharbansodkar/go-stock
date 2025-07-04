@@ -12,6 +12,7 @@ const Container = () => {
   const [containerWidth, setContainerWidth] = useState(0);
   const [watchlistData, setWatchlistData] = useState({});
   const [selectedStock, setSelectedStock] = useState(null);
+  const [watchlistKeys, setWatchlistKeys] = useState([]);
   const containerRef = useRef(null);
   const visibleCards = 3;
 
@@ -20,10 +21,12 @@ const Container = () => {
   const gap = 12; // Corresponds to gap-3 (0.75rem = 12px assuming 1rem = 16px)
 
   const showNext = () => {
-    if (watchlist.length === 0) return;
+    if (watchlistKeys.length === 0) return;
 
     setCurrentIndex((prevIndex) =>
-      prevIndex === watchlist.length - visibleCards ? prevIndex : prevIndex + 1
+      prevIndex === watchlistKeys.length - visibleCards
+        ? prevIndex
+        : prevIndex + 1
     );
   };
 
@@ -32,7 +35,8 @@ const Container = () => {
   };
 
   useEffect(() => {
-    setSelectedStock(watchlistData[Object.keys(watchlistData)[0]]);
+    setWatchlistKeys(Object.keys(watchlistData));
+    setSelectedStock(watchlistData[watchlistKeys[0]]);
   }, [watchlistData]);
 
   useEffect(() => {
