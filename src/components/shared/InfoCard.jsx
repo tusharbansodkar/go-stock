@@ -2,16 +2,11 @@ import { useEffect, useState } from "react";
 import LineChart from "./LineChart";
 import { sharedSocket as socket } from "@/services/socketServices";
 
-const InfoCard = ({
-  itemWidth,
-  watchlistData,
-  setWatchlistData,
-  setSelectedStock,
-}) => {
+const InfoCard = ({ itemWidth, watchlistData, setSelectedStock }) => {
   return (
     <>
       {Object.keys(watchlistData).length === 0 ? (
-        <h4 className="text-center text-gray-500">
+        <h4 className="text-center text-gray-500 w-full h-[180px]">
           Add stocks to watchlist...
         </h4>
       ) : (
@@ -25,7 +20,7 @@ const InfoCard = ({
             return (
               <div
                 key={index}
-                className={`leading-7 h-[180px] shadow-lg/25 rounded-md cursor-pointer`}
+                className="leading-7 h-[180px] shadow-lg/25 rounded-md cursor-pointer"
                 style={{ minWidth: `${itemWidth - 12}px` }}
                 onClick={() => {
                   setSelectedStock(watchlistData[symbol]);

@@ -21,7 +21,7 @@ const Container = () => {
   const gap = 12; // Corresponds to gap-3 (0.75rem = 12px assuming 1rem = 16px)
 
   const showNext = () => {
-    if (watchlistKeys.length === 0) return;
+    if (watchlistKeys.length <= visibleCards) return;
 
     setCurrentIndex((prevIndex) =>
       prevIndex === watchlistKeys.length - visibleCards
@@ -74,7 +74,6 @@ const Container = () => {
             <InfoCard
               itemWidth={itemWidth}
               watchlistData={watchlistData}
-              setWatchlistData={setWatchlistData}
               setSelectedStock={setSelectedStock}
             />
           </div>
