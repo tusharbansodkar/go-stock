@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { sharedSocket as socket } from "@/services/socketServices";
+import "animate.css";
 
 const TickerTape = ({ marketData }) => {
   const [data, setData] = useState({});
@@ -45,7 +46,7 @@ const TickerTape = ({ marketData }) => {
   }, []);
 
   return (
-    <div className="flex justify-around h-5 py-4 bg-gray-700 text-white">
+    <div className="flex justify-around h-5 py-4 bg-gray-700 text-white animate__animated animate__fadeIn">
       {Object.entries(data).map(([symbol, stockData]) => {
         let priceChange = (stockData.LastRate - stockData.PClose).toFixed(2);
         let changePcnt = ((priceChange / stockData.PClose) * 100).toFixed(2);

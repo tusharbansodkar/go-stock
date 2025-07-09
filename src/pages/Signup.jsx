@@ -8,6 +8,7 @@ import ImageSlider from "@/components/shared/ImageSlider";
 import axios from "axios";
 import { showToast } from "@/utils/toast";
 import { useNavigate } from "react-router-dom";
+import "animate.css";
 
 const Signup = () => {
   const { control, handleSubmit, watch } = useForm({
@@ -49,7 +50,7 @@ const Signup = () => {
   let passwordValue = watch("password");
 
   return (
-    <div className="flex justify-center items-center h-screen md:space-x-15 lg:space-x-50">
+    <div className="flex justify-center items-center h-screen md:space-x-15 lg:space-x-50 animate__animated animate__fadeIn">
       <ImageSlider />
       <div className="w-[80%] sm:w-96">
         <h2 className="scroll-m-20 border-b pb-1 text-3xl font-semibold tracking-tight first:mt-0">

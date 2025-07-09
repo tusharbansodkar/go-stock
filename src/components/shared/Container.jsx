@@ -6,6 +6,7 @@ import InfoCard from "./InfoCard";
 import Watchlist from "./Watchlist";
 import CandlestickChart from "./CandlestickChart";
 import { AuthContext } from "@/context";
+import "animate.css";
 
 const Container = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -52,7 +53,7 @@ const Container = () => {
   }, []);
 
   return (
-    <div className="h-[calc(100vh-6rem)] p-3 overflow-y-auto">
+    <div className="h-[calc(100vh-6rem)] p-3 overflow-y-auto animate__animated animate__fadeIn">
       <div className=" grid grid-cols-3 gap-4 overflow-auto">
         <div
           ref={containerRef}

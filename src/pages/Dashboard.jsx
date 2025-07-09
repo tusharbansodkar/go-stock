@@ -12,7 +12,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="flex h-svh">
+    <div className="flex h-svh ">
       <Sidebar />
       <main className="h-full flex-1 overflow-hidden ">
         <Navbar />

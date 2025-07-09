@@ -4,7 +4,7 @@ import { AuthContext } from "@/context";
 import { sharedSocket as socket } from "@/services/socketServices";
 import { showToast } from "@/utils/toast";
 import axios from "axios";
-import { WATCHLIST_FEED_ITEM } from "@/data";
+import "animate.css";
 
 const exchangeMap = {
   N: "NSE",
@@ -141,7 +141,7 @@ const Watchlist = ({ watchlistData, setWatchlistData }) => {
             return (
               <li
                 key={index}
-                className="flex justify-between items-center group tracking-tight border-b-2 border-gray-300 p-2 hover:bg-gray-100"
+                className="flex justify-between items-center group tracking-tight border-b-2 border-gray-300 p-2 hover:bg-gray-100 animate__animated animate__fadeIn"
               >
                 <div
                   className="w-[50%] truncate cursor-pointer"

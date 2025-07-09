@@ -8,6 +8,7 @@ import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import { AuthContext } from "../context";
 import Header from "@/components/shared/Header";
 import { useNavigate } from "react-router-dom";
+import "animate.css";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -34,7 +35,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen md:space-x-15 lg:space-x-50">
+    <div className="flex justify-center items-center h-screen md:space-x-15 lg:space-x-50 animate__animated animate__fadeIn">
       <ImageSlider />
       <div className="w-[80%] sm:w-96">
         <Header />
