@@ -1,17 +1,18 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import ButtonRight from "./ButtonRight";
 import ButtonLeft from "./ButtonLeft";
 import LoadingSpinner from "./LoadingSpinner";
 import InfoCard from "./InfoCard";
 import Watchlist from "./Watchlist";
 import CandlestickChart from "./CandlestickChart";
+import { AuthContext } from "@/context";
 
 const Container = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
   const [watchlistData, setWatchlistData] = useState({});
   const [watchlistKeys, setWatchlistKeys] = useState([]);
-  const [selectedStock, setSelectedStock] = useState(null);
+  const { selectedStock, setSelectedStock } = useContext(AuthContext);
   const containerRef = useRef(null);
   const visibleCards = 3;
 
@@ -38,8 +39,6 @@ const Container = () => {
   }, [watchlistData]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
     const resizedObserver = new ResizeObserver((entries) => {
       for (let entry of entries) {
         setContainerWidth(entry.contentRect.width);
@@ -98,7 +97,6 @@ const Container = () => {
           <Watchlist
             watchlistData={watchlistData}
             setWatchlistData={setWatchlistData}
-            setSelectedStock={setSelectedStock}
           />
         </div>
       </div>

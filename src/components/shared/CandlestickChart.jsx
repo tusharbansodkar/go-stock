@@ -1,5 +1,5 @@
 import { CandlestickSeries, createChart } from "lightweight-charts";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { sharedSocket as socket } from "@/services/socketServices";
 

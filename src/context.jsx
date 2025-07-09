@@ -7,6 +7,7 @@ export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedStock, setSelectedStock] = useState(null);
   const searchInputRef = useRef(null);
 
   // Check if user is logged in when the component mounts
@@ -103,6 +104,8 @@ const AuthProvider = ({ children }) => {
         searchInputRef,
         updateProfileDetails,
         fetchWatchlist,
+        selectedStock,
+        setSelectedStock,
       }}
     >
       {children}
