@@ -12,11 +12,14 @@ const exchangeMap = {
   M: "MCX",
 };
 
-const Watchlist = ({ watchlistData, setWatchlistData, setSelectedStock }) => {
-  const { searchInputRef, fetchWatchlist } = useContext(AuthContext);
+const Watchlist = ({ watchlistData, setWatchlistData, selectedStock }) => {
   const {
+    searchInputRef,
+    fetchWatchlist,
+    setSelectedStock,
     user: { watchlist },
   } = useContext(AuthContext);
+
   const SYMBOL_LOOKUP = new Map(
     watchlist.map((item) => [
       parseInt(item.ScripCode),

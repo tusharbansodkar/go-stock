@@ -14,6 +14,7 @@ const exchangeMap = {
 const SearchResult = ({ result, selectedItem, data, setData }) => {
   const [selectedOption, setSelectedOption] = useState("All");
   const { fetchWatchlist } = useContext(AuthContext);
+  const { setSelectedStock } = useContext(AuthContext);
 
   const payload = result.map(({ Exch, ExchType, ScripCode }) => {
     return {
@@ -133,15 +134,16 @@ const SearchResult = ({ result, selectedItem, data, setData }) => {
               }`}
             >
               <div className="w-[50%]">
-                <div className="w-fit items-center cursor-pointer">
+                <div
+                  className="w-fit items-center cursor-pointer"
+                  onClick={() => setSelectedStock(stockData)}
+                >
                   <span>{name}</span>
                   <span className="text-gray-800 w-fit ml-1 rounded-xs text-xs py-0.5 px-1 bg-gray-300">
                     {exchangeMap[exch]}
                   </span>
                 </div>
-                <p className="truncate text-xs cursor-pointer">
-                  {stockData.FullName}
-                </p>
+                <p className="truncate text-xs">{stockData.FullName}</p>
               </div>
               <span
                 className="opacity-0 group-hover:opacity-100 cursor-pointer"
