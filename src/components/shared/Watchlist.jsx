@@ -12,7 +12,7 @@ const exchangeMap = {
   M: "MCX",
 };
 
-const Watchlist = ({ watchlistData, setWatchlistData, selectedStock }) => {
+const Watchlist = ({ watchlistData, setWatchlistData }) => {
   const {
     searchInputRef,
     fetchWatchlist,
@@ -76,14 +76,6 @@ const Watchlist = ({ watchlistData, setWatchlistData, selectedStock }) => {
 
   useEffect(() => {
     if (watchlist.length === 0) return;
-
-    const { Exch, ExchType, ScripCode, FullName } = watchlist[0];
-    setSelectedStock({
-      Exch,
-      ExchType,
-      Token: ScripCode,
-      FullName,
-    });
 
     const handleConnect = () => {
       console.log("watchlist connected");
