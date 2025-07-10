@@ -5,6 +5,7 @@ import { useContext, useEffect } from "react";
 import { AuthContext } from "@/context";
 import { showToast } from "@/utils/toast";
 import axios from "axios";
+import "animate.css";
 
 const Profile = () => {
   const { user, updateProfileDetails } = useContext(AuthContext);
@@ -55,7 +56,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="h-screen p-4 overflow-auto ">
+    <div className="h-screen p-4 overflow-auto animate__animated animate__fadeIn">
       <div className="relative w-[80%] m-auto">
         <h2 className="font-bold text-3xl tracking-wide">Profile</h2>
         <hr className="border-gray-300 border-1 mt-4" />

@@ -12,13 +12,14 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
+import "animate.css";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   return (
-    <div className=" flex justify-around items-center bg-white h-16">
+    <div className=" flex justify-around items-center bg-white h-16 ">
       <SearchBar />
       <div className="flex items-center gap-4  ">
         <BellDot className="text-gray-600" size={20} />
@@ -49,7 +50,7 @@ const Navbar = () => {
             </DropdownMenuTrigger>
 
             <DropdownMenuContent
-              className="min-w-36 bg-white drop-shadow-lg rounded-md  mt-2 border border-gray-200 z-1 "
+              className="min-w-36 bg-white drop-shadow-lg rounded-md  mt-2 border border-gray-200 z-1 animate__animated animate__fadeIn animate__faster"
               align="end"
             >
               <DropdownMenuItem className=" p-1 focus:outline-none cursor-pointer">
