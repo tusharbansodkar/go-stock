@@ -141,7 +141,7 @@ const Watchlist = ({ watchlistData, setWatchlistData }) => {
             return (
               <li
                 key={index}
-                className="flex justify-between items-center group tracking-tight border-b-2 border-gray-300 p-2 hover:bg-gray-100 animate__animated animate__fadeIn"
+                className="flex justify-between items-center group tracking-tight border-b-2 border-gray-300 p-2 hover:bg-gray-100 animate__animated animate__fadeIn animate__faster"
               >
                 <div
                   className="w-[50%] truncate cursor-pointer"
