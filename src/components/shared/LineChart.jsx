@@ -1,6 +1,7 @@
 import { createChart, AreaSeries } from "lightweight-charts";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { LoaderCircle } from "lucide-react";
 
 const LineChart = ({ Exch, ExchType, ScripCode }) => {
   const chartContainerRef = useRef(null);
@@ -118,7 +119,13 @@ const LineChart = ({ Exch, ExchType, ScripCode }) => {
     }
   }, [stockData]);
 
-  return <div ref={chartContainerRef} className="w-full h-full" />;
+  return stockData.length === 0 ? (
+    <div className="h-full flex justify-center items-center w-full">
+      <LoaderCircle className="animate-spin text-[#7C444F] size-10" />
+    </div>
+  ) : (
+    <div ref={chartContainerRef} className="w-full h-full" />
+  );
 };
 
 export default LineChart;

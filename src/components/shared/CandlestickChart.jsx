@@ -2,6 +2,7 @@ import { CandlestickSeries, createChart } from "lightweight-charts";
 import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { sharedSocket as socket } from "@/services/socketServices";
+import { LoaderCircle } from "lucide-react";
 
 const exchangeMap = {
   N: "NSE",
@@ -52,6 +53,8 @@ const CandlestickChart = ({ selectedStock }) => {
 
   useEffect(() => {
     if (Object.keys(selectedStock).length === 0) return;
+
+    setStockFeed([]);
 
     const handleStockFeed = (newData) => {
       const token = newData.Token;
@@ -112,7 +115,11 @@ const CandlestickChart = ({ selectedStock }) => {
     }
   }, [latestFeed]);
 
-  return (
+  return stockFeed.length === 0 ? (
+    <div className="h-full flex justify-center items-center w-full">
+      <LoaderCircle className="animate-spin text-[#7C444F] size-10" />
+    </div>
+  ) : (
     <div ref={chartContainerRef} className="w-full h-full relative">
       <p className="absolute text-lg font-semibold top-1 left-4 bg-white p-2 z-2">
         {`${FullName} | ${exchangeMap[Exch]}`}
