@@ -35,7 +35,6 @@ const Login = () => {
   };
 
   return (
-    // <h1 className="text-red-500">Hello World</h1>
     <div className="flex justify-center items-center h-screen md:space-x-15 lg:space-x-50 animate__animated animate__fadeIn">
       <ImageSlider />
       <div className="w-[80%] sm:w-96">

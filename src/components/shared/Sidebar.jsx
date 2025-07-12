@@ -1,6 +1,9 @@
+import { useContext } from "react";
 import logo from "../../assets/GoStock-logo1.png";
+import logoDark from "../../assets/GoStock-logo2.png";
 import { ChartSpline, ChartArea, Newspaper, UserRoundPen } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { ThemeContext } from "@/ThemeContext";
 
 const Sidebar = () => {
   const menuItems = [
@@ -17,11 +20,13 @@ const Sidebar = () => {
     },
   ];
 
+  const { theme } = useContext(ThemeContext);
+
   return (
     <div className="min-w-[250px] h-screen bg-white dark:bg-gray-800 border-r-1 border-gray-200 relative">
       <div className="flex justify-center items-center h-16 mt-2 w-full">
         <img
-          src={logo}
+          src={theme === "dark" ? logoDark : logo}
           alt="gostock-logo"
           className=" w-[130px] h-14 object-contain z-1 "
         />
