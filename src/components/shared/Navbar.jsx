@@ -19,7 +19,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className=" flex justify-around items-center bg-white h-16 ">
+    <div className=" flex justify-around items-center bg-white dark:bg-gray-800 h-16 ">
       <SearchBar />
       <div className="flex items-center gap-4  ">
         <BellDot className="text-gray-600" size={20} />

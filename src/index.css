@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -115,7 +115,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-gray-100 text-foreground max-h-svh m-0 overflow-hidden;
+    @apply bg-gray-100 text-foreground dark:bg-gray-800 dark:text-foreground max-h-svh m-0 overflow-hidden;
   }
 }
 
