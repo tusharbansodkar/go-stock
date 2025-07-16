@@ -95,11 +95,11 @@ const SearchResult = ({ result, selectedItem, data, setData }) => {
   }, [result]);
 
   return (
-    <div className="w-[150%] h-60 bg-gray-50 rounded-md mt-3 p-2 shadow-md/20 overflow-y-auto custom-scrollbar">
-      <div className="grid grid-cols-3 border-b-2 border-gray-300 pb-2 text-gray-500 text-center text-md">
+    <div className="w-[150%] h-60 bg-gray-50 dark:bg-gray-600 rounded-md mt-3 p-2 shadow-md/20 overflow-y-auto custom-scrollbar">
+      <div className="grid grid-cols-3 border-b-2 border-gray-300 pb-2 text-gray-500 dark:text-gray-300 text-center text-md">
         <p
           className={`border-r-2 border-gray-300 cursor-pointer ${
-            selectedOption === "All" ? "text-amber-800" : ""
+            selectedOption === "All" ? "text-amber-800 dark:text-amber-400" : ""
           }`}
           onClick={() => handleClick("All")}
         >
@@ -107,7 +107,9 @@ const SearchResult = ({ result, selectedItem, data, setData }) => {
         </p>
         <p
           className={`border-r-2 border-gray-300 cursor-pointer ${
-            selectedOption === "Equity" ? "text-amber-800" : ""
+            selectedOption === "Equity"
+              ? "text-amber-800 dark:text-amber-400"
+              : ""
           }`}
           onClick={() => handleClick("Equity")}
         >
@@ -115,7 +117,9 @@ const SearchResult = ({ result, selectedItem, data, setData }) => {
         </p>
         <p
           className={`cursor-pointer ${
-            selectedOption === "Commodity" ? "text-amber-800" : ""
+            selectedOption === "Commodity"
+              ? "text-amber-800 dark:text-amber-400"
+              : ""
           }`}
           onClick={() => handleClick("Commodity")}
         >
@@ -129,8 +133,8 @@ const SearchResult = ({ result, selectedItem, data, setData }) => {
           return (
             <div
               key={index}
-              className={`flex justify-between items-center group hover:bg-gray-200 px-2 py-2 text-sm border-b-2 border-gray-300 ${
-                selectedItem === index ? "bg-gray-200" : ""
+              className={`flex justify-between items-center group hover:bg-gray-200 dark:hover:bg-gray-500 px-2 py-2 text-sm border-b-2 border-gray-300 ${
+                selectedItem === index ? "bg-gray-200 dark:bg-gray-500" : ""
               }`}
             >
               <div className="w-[50%]">
@@ -150,7 +154,7 @@ const SearchResult = ({ result, selectedItem, data, setData }) => {
                 title="Add to watchlist"
               >
                 <ShoppingBasket
-                  className="text-green-500"
+                  className="text-green-500 "
                   onClick={() => addToWatchlist(stockData._id)}
                 />
               </span>

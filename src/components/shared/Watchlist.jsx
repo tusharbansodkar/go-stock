@@ -141,7 +141,7 @@ const Watchlist = ({ watchlistData, setWatchlistData }) => {
             return (
               <li
                 key={index}
-                className="flex justify-between items-center group tracking-tight border-b-2 border-gray-300 p-2 hover:bg-gray-100 animate__animated animate__fadeIn animate__faster"
+                className="flex justify-between items-center group tracking-tight border-b-2 border-gray-300 p-2 hover:bg-gray-100 dark:hover:bg-gray-500 animate__animated animate__fadeIn animate__faster"
               >
                 <div
                   className="w-[50%] truncate cursor-pointer"
@@ -149,7 +149,7 @@ const Watchlist = ({ watchlistData, setWatchlistData }) => {
                     setSelectedStock(watchlistData[symbol]);
                   }}
                 >
-                  <p className="font-semibold text-sm">
+                  <p className="font-semibold text-sm dark:text-gray-300">
                     {symbol.split("-")[0]}
                   </p>
                   <p className="text-gray-800 w-fit rounded-xs text-xs p-1 bg-gray-200">

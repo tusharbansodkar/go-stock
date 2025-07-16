@@ -5,10 +5,10 @@ import Dashboard from "./pages/Dashboard";
 import Stocks from "./pages/Stocks";
 import Profile from "./pages/Profile";
 import News from "./pages/News";
-import AuthProvider, { AuthContext } from "./context";
 import { Toaster } from "react-hot-toast";
 import { useContext } from "react";
 import LoadingSpinner from "./components/shared/LoadingSpinner";
+import { AuthContext } from "./context";
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
@@ -21,7 +21,7 @@ const ProtectedRoute = ({ children }) => {
 
 function App() {
   return (
-    <AuthProvider>
+    <>
       <Router>
         <Routes>
           <Route path="/" element={<Login />} />
@@ -41,7 +41,7 @@ function App() {
         </Routes>
       </Router>
       <Toaster />
-    </AuthProvider>
+    </>
   );
 }
 

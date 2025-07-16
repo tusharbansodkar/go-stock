@@ -45,7 +45,7 @@ const ImageSlider = () => {
     //   />
     // </div>
 
-    <div className="hidden md:block relative w-[450px] h-[90%] overflow-hidden rounded-lg  border border-gray-200 shadow-lg shadow-gray-400">
+    <div className="hidden md:block relative w-[450px] h-[90%] overflow-hidden rounded-lg border border-gray-200 shadow-lg shadow-gray-400 dark:shadow-gray-600">
       <div>
         <img
           src={logo}

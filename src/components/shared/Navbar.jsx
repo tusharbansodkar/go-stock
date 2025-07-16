@@ -13,16 +13,17 @@ import {
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import "animate.css";
+import SwitchTheme from "./SwitchTheme";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   return (
-    <div className=" flex justify-around items-center bg-white h-16 ">
+    <div className="flex justify-around items-center bg-white dark:bg-gray-800 h-16">
       <SearchBar />
       <div className="flex items-center gap-4  ">
-        <BellDot className="text-gray-600" size={20} />
+        <BellDot className="text-gray-600 dark:text-gray-300" size={20} />
         <Separator
           orientation="vertical"
           className="h-8 w-[2px] bg-gray-200 "
@@ -32,25 +33,25 @@ const Navbar = () => {
             src="https://github.com/shadcn.png"
             className="w-full h-full rounded-full"
           />
-          <AvatarFallback className="text-gray-500 text-xl font-bold  ">
+          <AvatarFallback className="text-gray-500 dark:text-gray-300 text-xl font-bold  ">
             {user?.firstName?.charAt(0) || "U"}
           </AvatarFallback>
         </Avatar>
         <div className="flex items-center gap-2">
-          <h2 className="font-semibold text-gray-600 ">
+          <h2 className="font-semibold text-gray-600 dark:text-gray-300">
             {`${user?.firstName || ""} ${user?.lastName || ""}`.trim() ||
               "User"}
           </h2>
           <DropdownMenu>
             <DropdownMenuTrigger className="group focus:outline-none">
               <ChevronDown
-                className="text-gray-600 hover:cursor-pointer transition-transform duration-200 ease-linear delay-50 group-data-[state=open]:rotate-[-180deg] will-change-transform"
+                className="text-gray-600 dark:text-gray-300 hover:cursor-pointer transition-transform duration-200 ease-linear delay-50 group-data-[state=open]:rotate-[-180deg] will-change-transform"
                 size={20}
               />
             </DropdownMenuTrigger>
 
             <DropdownMenuContent
-              className="min-w-36 bg-white drop-shadow-lg rounded-md  mt-2 border border-gray-200 z-1 animate__animated animate__fadeIn animate__faster"
+              className="min-w-36 bg-white dark:bg-gray-600 drop-shadow-lg rounded-md mt-2 border border-gray-200 z-1 animate__animated animate__fadeIn animate__faster"
               align="end"
             >
               <DropdownMenuItem className=" p-1 focus:outline-none cursor-pointer">
@@ -73,6 +74,7 @@ const Navbar = () => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          <SwitchTheme />
         </div>
       </div>
     </div>
