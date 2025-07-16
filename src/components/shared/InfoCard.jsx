@@ -20,7 +20,7 @@ const InfoCard = ({ itemWidth, watchlistData, setSelectedStock }) => {
             return (
               <div
                 key={index}
-                className="leading-7 h-[180px] shadow-lg/25 rounded-md cursor-pointer"
+                className="leading-7 h-[180px] shadow-lg/25 rounded-md cursor-pointer dark:ring-1 dark:ring-gray-400 dark:text-gray-200 overflow-hidden"
                 style={{ minWidth: `${itemWidth - 12}px` }}
                 onClick={() => {
                   setSelectedStock(watchlistData[symbol]);
@@ -40,7 +40,7 @@ const InfoCard = ({ itemWidth, watchlistData, setSelectedStock }) => {
                 </div>
 
                 <div className="flex w-full justify-around ">
-                  <p className="text-gray-500">Price</p>
+                  <p className="text-gray-500 dark:text-gray-300">Price</p>
                   <p
                     className={
                       priceChange > 0 ? "text-green-500" : "text-red-500"
@@ -54,7 +54,7 @@ const InfoCard = ({ itemWidth, watchlistData, setSelectedStock }) => {
                 </div>
 
                 <div className="flex w-full justify-around">
-                  <p className="text-gray-500">High</p>
+                  <p className="text-gray-500 dark:text-gray-300">High</p>
                   <p className="text-green-500">
                     {stockData.High.toLocaleString("en-IN", {
                       minimumFractionDigits: 2,
@@ -64,7 +64,7 @@ const InfoCard = ({ itemWidth, watchlistData, setSelectedStock }) => {
                 </div>
 
                 <div className="flex w-full justify-around">
-                  <p className="text-gray-500">Low</p>
+                  <p className="text-gray-500 dark:text-gray-300">Low</p>
                   <p className="text-red-500">
                     {stockData.Low.toLocaleString("en-IN", {
                       minimumFractionDigits: 2,

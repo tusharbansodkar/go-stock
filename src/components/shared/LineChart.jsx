@@ -1,7 +1,8 @@
 import { createChart, AreaSeries } from "lightweight-charts";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { LoaderCircle } from "lucide-react";
+import { ThemeContext } from "@/ThemeContext";
 
 const LineChart = ({ Exch, ExchType, ScripCode }) => {
   const chartContainerRef = useRef(null);
@@ -12,6 +13,7 @@ const LineChart = ({ Exch, ExchType, ScripCode }) => {
   const dd = String(fifteenDaysAgo.getDate()).padStart(2, "0");
   const FromDate = `${yy}-${mm}-${dd}`;
   const [stockData, setStockData] = useState([]);
+  const { theme } = useContext(ThemeContext);
 
   const fetchHistoricalData = async () => {
     try {
@@ -48,8 +50,11 @@ const LineChart = ({ Exch, ExchType, ScripCode }) => {
     if (chartContainerRef.current) {
       const chart = createChart(chartContainerRef.current, {
         layout: {
-          textColor: "black",
-          background: { type: "solid", color: "white" },
+          textColor: theme === "light" ? "#000000" : "#d1d5dc",
+          background: {
+            type: "solid",
+            color: theme === "light" ? "white" : "#4a5565",
+          },
         },
         width: chartContainerRef.current.clientWidth,
         height: chartContainerRef.current.clientHeight,
@@ -99,13 +104,15 @@ const LineChart = ({ Exch, ExchType, ScripCode }) => {
             ? "#fb8775"
             : "#31f742",
         bottomColor:
-          stockData[stockData.length - 1].value <
-          stockData[stockData.length - 2].value
-            ? "#fad8d3"
-            : "#ccfcd7",
-        topColor: "#ffffff",
+          theme === "light"
+            ? stockData[stockData.length - 1].value <
+              stockData[stockData.length - 2].value
+              ? "#fad8d3"
+              : "#ccfcd7"
+            : "#4a5565",
+        topColor: theme === "light" ? "#ffffff" : "#4a5565",
         relativeGradient: true,
-        lineWidth: 2,
+        lineWidth: 3,
         priceLineVisible: false,
         crosshairMarkerVisible: false,
       });
@@ -117,11 +124,11 @@ const LineChart = ({ Exch, ExchType, ScripCode }) => {
         chart.remove();
       };
     }
-  }, [stockData]);
+  }, [stockData, theme]);
 
   return stockData.length === 0 ? (
     <div className="h-full flex justify-center items-center w-full">
-      <LoaderCircle className="animate-spin text-[#7C444F] size-10" />
+      <LoaderCircle className="animate-spin text-[#7C444F] dark:text-amber-600 size-10" />
     </div>
   ) : (
     <div ref={chartContainerRef} className="w-full h-full" />

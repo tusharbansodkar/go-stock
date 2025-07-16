@@ -57,7 +57,7 @@ const Container = () => {
       <div className=" grid grid-cols-3 gap-4 overflow-auto">
         <div
           ref={containerRef}
-          className="col-span-full rounded-md relative drop-shadow-sm/20 bg-white p-4 overflow-hidden"
+          className="col-span-full rounded-md relative drop-shadow-sm/20 bg-white dark:bg-gray-600 p-4 overflow-hidden"
         >
           <div
             className="flex gap-3 transition-transform duration-500 ease-in-out"
@@ -78,22 +78,22 @@ const Container = () => {
               setSelectedStock={setSelectedStock}
             />
           </div>
-          <div className="absolute top-1/2 left-0 bg-gray-300 hover:bg-gray-400 text-white tranform -translate-y-1/2 rounded-sm">
+          <div className="absolute top-1/2 left-0 bg-gray-300 dark:bg-gray-500 hover:bg-gray-400 text-white tranform -translate-y-1/2 rounded-sm">
             <ButtonLeft handleClick={showPrevious} />
           </div>
 
-          <div className="absolute top-1/2 right-0 bg-gray-300 hover:bg-gray-400 text-white tranform -translate-y-1/2 rounded-sm">
+          <div className="absolute top-1/2 right-0 bg-gray-300 dark:bg-gray-500 hover:bg-gray-400 text-white tranform -translate-y-1/2 rounded-sm">
             <ButtonRight handleClick={showNext} />
           </div>
         </div>
 
-        <div className="drop-shadow-sm/30 h-100 bg-white col-span-2 rounded-md">
+        <div className="drop-shadow-sm/30 h-100 bg-white dark:bg-gray-800 col-span-2 rounded-md overflow-hidden">
           {selectedStock ? (
             <CandlestickChart selectedStock={selectedStock} />
           ) : null}
         </div>
 
-        <div className="drop-shadow-sm/30 h-100 bg-white col-span-1 rounded-md overflow-hidden">
+        <div className="drop-shadow-sm/30 h-100 bg-white dark:bg-gray-600 col-span-1 rounded-md overflow-hidden">
           <Watchlist
             watchlistData={watchlistData}
             setWatchlistData={setWatchlistData}

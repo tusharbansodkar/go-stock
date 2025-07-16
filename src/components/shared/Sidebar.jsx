@@ -38,14 +38,16 @@ const Sidebar = () => {
             <li key={index}>
               <NavLink
                 className={({ isActive }) =>
-                  `flex justify-start items-center gap-x-2 rounded-md p-2 hover:bg-gray-100 transition-all duration-300 ease-in-out ${
-                    isActive ? "bg-blue-100 text-blue-600 font-semibold" : ""
+                  `font-semibold flex justify-start items-center gap-x-2 rounded-md p-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 transition-all duration-300 ease-in-out ${
+                    isActive
+                      ? "bg-blue-100 dark:bg-gray-500 text-blue-600 dark:text-red-300 font-semibold"
+                      : ""
                   }`
                 }
                 to={item.path}
               >
                 {item.icon}
-                <span className="text-lg ">{item.text}</span>
+                <span className="text-lg">{item.text}</span>
               </NavLink>
             </li>
           ))}

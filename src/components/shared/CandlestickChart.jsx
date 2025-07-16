@@ -3,6 +3,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { sharedSocket as socket } from "@/services/socketServices";
 import { LoaderCircle } from "lucide-react";
+import { ThemeContext } from "@/ThemeContext";
 
 const exchangeMap = {
   N: "NSE",
@@ -20,6 +21,7 @@ const CandlestickChart = ({ selectedStock }) => {
   const [stockFeed, setStockFeed] = useState([]);
   const seriesRef = useRef(null);
   const [latestFeed, setLatestFeed] = useState(null);
+  const { theme } = useContext(ThemeContext);
 
   const fetchHistoricalData = async () => {
     try {
@@ -81,8 +83,11 @@ const CandlestickChart = ({ selectedStock }) => {
 
     const chart = createChart(chartContainerRef.current, {
       layout: {
-        textColor: "black",
-        background: { type: "solid", color: "white" },
+        textColor: theme === "light" ? "#000000" : "#d1d5dc",
+        background: {
+          type: "solid",
+          color: theme === "light" ? "white" : "#4a5565",
+        },
       },
       width: chartContainerRef.current.clientWidth,
       height: chartContainerRef.current.clientHeight,
@@ -107,7 +112,7 @@ const CandlestickChart = ({ selectedStock }) => {
       chart.remove();
       seriesRef.current = null;
     };
-  }, [stockFeed]);
+  }, [stockFeed, theme]);
 
   useEffect(() => {
     if (seriesRef.current && latestFeed) {
@@ -121,7 +126,7 @@ const CandlestickChart = ({ selectedStock }) => {
     </div>
   ) : (
     <div ref={chartContainerRef} className="w-full h-full relative">
-      <p className="absolute text-lg font-semibold top-1 left-4 bg-white p-2 z-2">
+      <p className="absolute text-lg font-semibold top-1 left-4 bg-white dark:bg-gray-600 dark:text-gray-300 p-1 z-2">
         {`${FullName} | ${exchangeMap[Exch]}`}
       </p>
     </div>
