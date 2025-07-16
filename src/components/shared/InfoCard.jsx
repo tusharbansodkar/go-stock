@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
 import LineChart from "./LineChart";
-import { sharedSocket as socket } from "@/services/socketServices";
 
 const InfoCard = ({ itemWidth, watchlistData, setSelectedStock }) => {
   return (
@@ -12,14 +10,14 @@ const InfoCard = ({ itemWidth, watchlistData, setSelectedStock }) => {
       ) : (
         Object.entries(watchlistData)
           .sort((a, b) => a[0].localeCompare(b[0]))
-          .map(([symbol, stockData], index) => {
+          .map(([symbol, stockData]) => {
             let priceChange = (stockData.LastRate - stockData.PClose).toFixed(
               2
             );
 
             return (
               <div
-                key={index}
+                key={stockData._id}
                 className="leading-7 h-[180px] shadow-lg/25 rounded-md cursor-pointer dark:ring-1 dark:ring-gray-400 dark:text-gray-200 overflow-hidden"
                 style={{ minWidth: `${itemWidth - 12}px` }}
                 onClick={() => {
