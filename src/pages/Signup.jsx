@@ -1,7 +1,6 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
-import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ControlledInput from "../components/shared/ControlledInput";
 import ImageSlider from "@/components/shared/ImageSlider";
@@ -10,9 +9,15 @@ import { showToast } from "@/utils/toast";
 import { useNavigate } from "react-router-dom";
 import "animate.css";
 import SwitchTheme from "@/components/shared/SwitchTheme";
+import { LoaderCircle } from "lucide-react";
 
 const Signup = () => {
-  const { control, handleSubmit, watch } = useForm({
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { isSubmitting },
+  } = useForm({
     mode: "all",
     defaultValues: {
       firstName: "",
@@ -131,7 +136,7 @@ const Signup = () => {
               rules={{ required: "You must accept the terms and conditions" }}
               render={({ field, fieldState }) => (
                 // container for checkbox, label and error message
-                <div className=" h-[40px]">
+                <div className="h-[40px]">
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       id="terms"
@@ -140,7 +145,9 @@ const Signup = () => {
                       onCheckedChange={field.onChange}
                       ref={field.ref}
                       className={`cursor-pointer ${
-                        fieldState.error ? "border-red-500" : ""
+                        fieldState.error
+                          ? "border-red-500"
+                          : "border-gray-600 dark:border-gray-300"
                       }`}
                     />
                     <label
@@ -163,9 +170,13 @@ const Signup = () => {
 
             <Button
               type="submit"
-              className="w-full cursor-pointer bg-[#7C444F] hover:bg-[#9F5255] drop-shadow-sm drop-shadow-[#7c444f] hover:drop-shadow-[#9f5255]"
+              className="w-full cursor-pointer bg-[#7C444F] dark:bg-[#9F5255] hover:bg-[#9F5255] dark:hover:bg-[#7C444F] dark:text-foreground drop-shadow-sm drop-shadow-[#7c444f] hover:drop-shadow-[#9f5255]"
             >
-              Sign Up
+              {isSubmitting ? (
+                <LoaderCircle className="animate-spin font-semibold" />
+              ) : (
+                "Sign Up"
+              )}
             </Button>
 
             <div className="flex items-center gap-4 text-sm text-muted-foreground ">

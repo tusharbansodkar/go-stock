@@ -17,7 +17,6 @@ const TickerTape = ({ marketData }) => {
 
   useEffect(() => {
     const handleMarketData = (newData) => {
-      // console.log("ticker tape", newData);
       const token = newData.Token;
       const symbol = SYMBOL_LOOKUP.get(token);
 

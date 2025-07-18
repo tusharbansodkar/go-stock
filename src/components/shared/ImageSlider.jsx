@@ -1,4 +1,3 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import logo from "../../assets/GoStock-logo1.png";
 import ButtonLeft from "./ButtonLeft";
@@ -33,18 +32,6 @@ const ImageSlider = () => {
   }, []);
 
   return (
-    // <div
-    //   className={`w-[500px] h-[90%] rounded-lg overflow-hidden shadow-lg shadow-gray-400 border border-gray-200 mr-15 transition-opacity duration-150 ease-in-out ${
-    //     fade ? "opacity-100" : "opacity-0"
-    //   }`}
-    // >
-    //   <img
-    //     src={images[currentIndex]}
-    //     className="w-full h-full object-cover transition-opacity duration-500 ease-in-out"
-    //     alt="Stock market visual"
-    //   />
-    // </div>
-
     <div className="hidden md:block relative w-[450px] h-[90%] overflow-hidden rounded-lg border border-gray-200 shadow-lg shadow-gray-400 dark:shadow-gray-600">
       <div>
         <img

@@ -1,7 +1,6 @@
 import ImageSlider from "@/components/shared/ImageSlider";
 import ControlledInput from "@/components/shared/ControlledInput";
-import { Eye, EyeOff } from "lucide-react";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
@@ -10,9 +9,9 @@ import Header from "@/components/shared/Header";
 import { useNavigate } from "react-router-dom";
 import "animate.css";
 import SwitchTheme from "@/components/shared/SwitchTheme";
+import { LoaderCircle } from "lucide-react";
 
 const Login = () => {
-  const [showPassword, setShowPassword] = useState(false);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -70,7 +69,7 @@ const Login = () => {
                 control={control}
                 name="password"
                 placeholder="Enter your password"
-                type={showPassword ? "text" : "password"}
+                type="password"
                 rules={{
                   required: "Password is required",
                   minLength: {
@@ -83,9 +82,13 @@ const Login = () => {
 
             <Button
               type="submit"
-              className="w-full cursor-pointer bg-[#7C444F] hover:bg-[#9F5255] drop-shadow-sm drop-shadow-[#7c444f] hover:drop-shadow-[#9f5255]"
+              className="w-full cursor-pointer bg-[#7C444F] dark:bg-[#9F5255] hover:bg-[#9F5255] dark:hover:bg-[#7C444F] dark:text-foreground drop-shadow-sm drop-shadow-[#7c444f] hover:drop-shadow-[#9f5255]"
             >
-              {isSubmitting ? "Logging in..." : "Log In"}
+              {isSubmitting ? (
+                <LoaderCircle className="animate-spin font-semibold" />
+              ) : (
+                "Log In"
+              )}
             </Button>
 
             <div className="flex items-center gap-4 text-sm text-muted-foreground ">
