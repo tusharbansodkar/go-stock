@@ -5,10 +5,10 @@ export const ThemeContext = createContext();
 const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
     const savedTheme = localStorage.getItem("theme");
-    const userPreferDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-    return savedTheme || userPreferDark ? "dark" : "light";
+    if (savedTheme) return savedTheme;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
   });
 
   useEffect(() => {
