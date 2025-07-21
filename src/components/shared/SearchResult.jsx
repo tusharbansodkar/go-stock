@@ -4,6 +4,7 @@ import { sharedSocket as socket } from "@/services/socketServices";
 import { AuthContext } from "@/context";
 import { showToast } from "@/utils/toast";
 import axios from "axios";
+import { symbolLookup } from "@/utils/functions";
 
 const exchangeMap = {
   N: "NSE",
@@ -24,12 +25,7 @@ const SearchResult = ({ result, selectedItem, data, setData }) => {
     };
   });
 
-  const SYMBOL_LOOKUP = new Map(
-    result.map((item) => [
-      item.ScripCode,
-      { Name: item.Name, FullName: item.FullName, _id: item._id },
-    ])
-  );
+  const SYMBOL_LOOKUP = symbolLookup(result);
 
   const addToWatchlist = async (_id) => {
     const token = localStorage.getItem("token");
@@ -66,12 +62,12 @@ const SearchResult = ({ result, selectedItem, data, setData }) => {
     setData({});
 
     const handleMarketData = (newData) => {
-      const token = newData.Token.toString();
+      const token = newData.Token;
       const symbolData = SYMBOL_LOOKUP.get(token);
 
       if (!symbolData) return;
 
-      const { Name: symbol, FullName: fullName, _id } = symbolData;
+      const { symbol, fullName, _id } = symbolData;
       const uniqueSymbol = `${symbol}-${newData.Exch}`;
 
       if (uniqueSymbol) {
@@ -79,7 +75,7 @@ const SearchResult = ({ result, selectedItem, data, setData }) => {
           ...prevData,
           [uniqueSymbol]: {
             ...newData,
-            FullName: fullName,
+            fullName,
             _id,
           },
         }));
@@ -147,7 +143,7 @@ const SearchResult = ({ result, selectedItem, data, setData }) => {
                     {exchangeMap[exch]}
                   </span>
                 </div>
-                <p className="truncate text-xs">{stockData.FullName}</p>
+                <p className="truncate text-xs">{stockData.fullName}</p>
               </div>
               <span
                 className="opacity-0 group-hover:opacity-100 cursor-pointer"

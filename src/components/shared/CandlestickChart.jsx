@@ -12,7 +12,7 @@ const exchangeMap = {
 };
 
 const CandlestickChart = ({ selectedStock }) => {
-  const { Exch, ExchType, Token: ScripCode, FullName } = selectedStock;
+  const { Exch, ExchType, Token: ScripCode, fullName } = selectedStock;
   const chartContainerRef = useRef(null);
   const Today = new Date().toISOString().split("T")[0];
   const fromDate = new Date();
@@ -62,6 +62,7 @@ const CandlestickChart = ({ selectedStock }) => {
       const token = newData.Token;
       if (token !== parseInt(ScripCode)) return;
       setLatestFeed((prevData) => ({
+        ...prevData,
         time: Today,
         open: newData.OpenRate,
         high: newData.High,
@@ -127,7 +128,7 @@ const CandlestickChart = ({ selectedStock }) => {
   ) : (
     <div ref={chartContainerRef} className="w-full h-full relative">
       <p className="absolute text-lg font-semibold top-1 left-4 bg-white dark:bg-gray-600 dark:text-gray-300 p-1 z-2">
-        {`${FullName} | ${exchangeMap[Exch]}`}
+        {`${fullName} | ${exchangeMap[Exch]}`}
       </p>
     </div>
   );

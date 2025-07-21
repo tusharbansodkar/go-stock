@@ -65,13 +65,6 @@ const Container = () => {
               transform: `translateX(-${currentIndex * itemWidth}px)`,
             }}
           >
-            {/* {loading ? (
-              <div className="h-[150px] w-full">
-                <LoadingSpinner />
-              </div>
-            ) : (
-              
-            )} */}
             <InfoCard
               itemWidth={itemWidth}
               watchlistData={watchlistData}

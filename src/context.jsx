@@ -11,7 +11,7 @@ const AuthProvider = ({ children }) => {
     Exch: "N",
     ExchType: "C",
     Token: 999920000,
-    FullName: "NIFTY",
+    fullName: "NIFTY",
   });
   const searchInputRef = useRef(null);
 

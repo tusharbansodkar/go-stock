@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { sharedSocket as socket } from "@/services/socketServices";
+import { symbolLookup } from "@/utils/functions";
 import "animate.css";
 
 const TickerTape = ({ marketData }) => {
@@ -7,20 +8,17 @@ const TickerTape = ({ marketData }) => {
 
   const MARKET_FEED_ITEMS = marketData.slice(0, 3);
 
-  const TARGET_SCRIPS = new Set(
-    MARKET_FEED_ITEMS.map((item) => item.ScripCode)
-  );
-
-  const SYMBOL_LOOKUP = new Map(
-    MARKET_FEED_ITEMS.map((item) => [item.ScripCode, item.Symbol])
-  );
+  const SYMBOL_LOOKUP = symbolLookup(MARKET_FEED_ITEMS);
 
   useEffect(() => {
     const handleMarketData = (newData) => {
       const token = newData.Token;
-      const symbol = SYMBOL_LOOKUP.get(token);
+      const symbolData = SYMBOL_LOOKUP.get(token);
 
-      if (symbol && TARGET_SCRIPS.has(token)) {
+      if (!symbolData) return;
+      const { symbol } = symbolData;
+
+      if (symbol) {
         setData((prevData) => ({
           ...prevData,
           [symbol]: newData,

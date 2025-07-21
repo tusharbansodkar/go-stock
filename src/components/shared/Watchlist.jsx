@@ -5,6 +5,7 @@ import { sharedSocket as socket } from "@/services/socketServices";
 import { showToast } from "@/utils/toast";
 import axios from "axios";
 import "animate.css";
+import { symbolLookup } from "@/utils/functions";
 
 const exchangeMap = {
   N: "NSE",
@@ -20,16 +21,7 @@ const Watchlist = ({ watchlistData, setWatchlistData }) => {
     user: { watchlist },
   } = useContext(AuthContext);
 
-  const SYMBOL_LOOKUP = new Map(
-    watchlist.map((item) => [
-      parseInt(item.ScripCode),
-      { Name: item.Name, FullName: item.FullName, _id: item._id },
-    ])
-  );
-
-  const TARGET_SCRIPS = new Set(
-    watchlist.map((item) => parseInt(item.ScripCode))
-  );
+  const SYMBOL_LOOKUP = symbolLookup(watchlist);
 
   const payload = watchlist.map((item) => ({
     Exch: item.Exch,
@@ -87,15 +79,15 @@ const Watchlist = ({ watchlistData, setWatchlistData }) => {
       const symbolData = SYMBOL_LOOKUP.get(token);
 
       if (!symbolData) return;
-      const { Name: symbol, FullName, _id } = symbolData;
+      const { symbol, fullName, _id } = symbolData;
       const uniqueSymbol = `${symbol}-${newData.Exch}`;
 
-      if (symbol && TARGET_SCRIPS.has(token)) {
+      if (symbol) {
         setWatchlistData((prevData) => ({
           ...prevData,
           [uniqueSymbol]: {
             ...newData,
-            FullName,
+            fullName,
             _id,
           },
         }));
