@@ -22,6 +22,7 @@ const Signup = () => {
     defaultValues: {
       firstName: "",
       lastName: "",
+      email: "",
       password: "",
       confirmPassword: "",
       terms: false,
@@ -32,14 +33,17 @@ const Signup = () => {
   const onSubmit = async (data) => {
     try {
       const { firstName, lastName, email, password } = data;
-      await axios.post("http://localhost:5000/api/auth/register", {
-        firstName,
-        lastName,
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/register",
+        {
+          firstName,
+          lastName,
+          email,
+          password,
+        }
+      );
 
-      showToast.success("Account created successfully");
+      showToast.success(response.data.message);
       navigate("/");
     } catch (error) {
       console.error(

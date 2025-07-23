@@ -55,10 +55,10 @@ const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error(
         "Login error:",
-        error.response?.data?.message || "Login failed. Please try "
+        error.response?.data?.message || "Login failed. Please try again"
       );
       showToast.error(
-        error.response?.data?.message || "Login failed. Please try "
+        error.response?.data?.message || "Login failed. Please try again"
       );
     }
   };

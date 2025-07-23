@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef, useContext } from "react";
 import ButtonRight from "./ButtonRight";
 import ButtonLeft from "./ButtonLeft";
-import LoadingSpinner from "./LoadingSpinner";
 import InfoCard from "./InfoCard";
 import Watchlist from "./Watchlist";
 import CandlestickChart from "./CandlestickChart";
