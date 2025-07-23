@@ -20,10 +20,11 @@ const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("token");
     if (token) {
       axios
-        .get("http://localhost:5000/api/auth/me", {
+        .get("https://go-stock-backend.onrender.com/api/auth/me", {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
+          console.log(response.data);
           setUser(response.data);
         })
         .catch((error) => {
@@ -43,7 +44,7 @@ const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "https://go-stock-backend.onrender.com/api/auth/login",
         {
           email,
           password,
@@ -79,7 +80,7 @@ const AuthProvider = ({ children }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:5000/api/user/watchlist",
+        "https://go-stock-backend.onrender.com/api/user/watchlist",
         {
           headers: {
             Authorization: `Bearer ${token}`,

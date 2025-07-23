@@ -26,7 +26,7 @@ const CandlestickChart = ({ selectedStock }) => {
   const fetchHistoricalData = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/market-data/historical-data",
+        "https://go-stock-backend.onrender.com/api/market-data/historical-data",
         {
           Exch,
           ExchType,

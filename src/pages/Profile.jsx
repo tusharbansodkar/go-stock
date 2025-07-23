@@ -39,11 +39,15 @@ const Profile = () => {
       payload.password = password;
     }
     try {
-      await axios.put("http://localhost:5000/api/user/profile", payload, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      await axios.put(
+        "https://go-stock-backend.onrender.com/api/user/profile",
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       const { firstName, lastName } = payload;
       updateProfileDetails({ firstName, lastName, email });
