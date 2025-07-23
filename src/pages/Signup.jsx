@@ -34,7 +34,7 @@ const Signup = () => {
     try {
       const { firstName, lastName, email, password } = data;
       const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        "https://go-stock-backend.onrender.com/api/auth/register",
         {
           firstName,
           lastName,

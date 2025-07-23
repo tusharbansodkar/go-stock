@@ -40,7 +40,7 @@ const Watchlist = ({ watchlistData, setWatchlistData }) => {
 
     try {
       const response = await axios.delete(
-        `http://localhost:5000/api/user/watchlist/${_id}`,
+        `https://go-stock-backend.onrender.com/api/user/watchlist/${_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

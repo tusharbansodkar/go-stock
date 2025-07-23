@@ -12,7 +12,7 @@ const News = () => {
   const token = localStorage.getItem("token");
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/headlines/topnews", {
+      .get("https://go-stock-backend.onrender.com/api/headlines/topnews", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => setNews(response.data))

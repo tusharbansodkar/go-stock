@@ -57,7 +57,9 @@ const SearchBar = () => {
 
     if (currentValue.length > 2) {
       axios
-        .get(`http://localhost:5000/api/search?string=${currentValue}`)
+        .get(
+          `https://go-stock-backend.onrender.com/api/search?string=${currentValue}`
+        )
         .then((res) => {
           const data = res.data;
           setResult(data);

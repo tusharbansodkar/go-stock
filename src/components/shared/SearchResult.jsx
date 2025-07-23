@@ -32,7 +32,7 @@ const SearchResult = ({ result, selectedItem, data, setData }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/user/watchlist",
+        "https://go-stock-backend.onrender.com/api/user/watchlist",
         {
           scripId: _id,
         },
